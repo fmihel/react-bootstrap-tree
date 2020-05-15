@@ -62,15 +62,36 @@ export default class TreeNode extends React.Component {
 
     render() {
         const {
-            data, level, toRoot, expandes, collapse, dataHashSum, selected,
+            data, level, toRoot, expandes, collapse, dataHashSum, selected, icons, Icon,
         } = this.props;
-
         const { childs } = data;
         const off = [];
         this.prevCollapse = this.collapse();
         const select = this.isSelected() ? ' tree-caption-select' : '';
+        const isFolder = (childs && childs.length);
+
+        const getIcon = () => {
+            const icon = icons[data.icon ? data.icon : 'common'];
+            if (icon) {
+                let iconName = false;
+                if (typeof icon === 'object') {
+                    iconName = icon[Object.keys(icon)];
+                    if (isFolder) {
+                        iconName = (this.prevCollapse ? icon.collapse : icon.expand) || iconName;
+                    } else {
+                        iconName = icon.last || iconName;
+                    }
+                }
+                // eslint-disable-next-line no-nested-ternary
+                return iconName ? (Icon ? <Icon icon={iconName}/> : iconName) : null;
+            }
+            return null;
+        };
+
+        const icon = getIcon();
+
         for (let i = 0; i < level; i++) {
-            off.push(<div key = {i} style={{ ...flex('fixed') }} className="tree-off">{i === level - 1 && '.'}</div>);
+            off.push(<div key = {i} style={{ ...flex('fixed') }} className="tree-off">{i === level - 1 && icon}</div>);
         }
         return (
             <div className="tree-node ">
@@ -85,7 +106,7 @@ export default class TreeNode extends React.Component {
                     <div style={{ ...flex('stretch') }}>{data.caption}</div>
                 </div>
 
-                {childs && childs.length && (
+                {isFolder && (
                     <div
                         className="tree-childs"
                         style={{ display: this.prevCollapse ? 'none' : 'block' }}
@@ -99,6 +120,8 @@ export default class TreeNode extends React.Component {
                             expandes={expandes}
                             selected={selected}
                             dataHashSum={dataHashSum}
+                            icons={icons}
+                            Icon={Icon}
                         />)}
 
                     </div>
@@ -119,4 +142,5 @@ TreeNode.defaultProps = {
         caption: 'text',
         childs: [],
     },
+
 };

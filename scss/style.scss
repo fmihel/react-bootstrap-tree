@@ -1,14 +1,14 @@
 //@import "node_modules/bootstrap/scss/bootstrap";
 //@import "bootstrap";
 @import "~bootstrap/scss/bootstrap";
-
-$fmb-size : 42px;
+$fmb-size : 48px;
+$fmb-size-mobile:32px;
 $fmb-color:('light':$blue,'dark':$gray-500);
 $fmb-bg:('light':$light,'dark':$dark);
 $fmb-color-hover:('light':$blue,'dark':$gray-300);
 $fmb-bg-hover:('light':$gray-200,'dark':$gray-700);
-$fmb-color-select:('light':$yellow,'dark':$yellow);
-$fmb-bg-select:('light':$green,'dark':$green);
+$fmb-color-select:('light':$light,'dark':$yellow);
+$fmb-bg-select:('light':$primary,'dark':$gray-700);
 
 $fmb-border:('light':$gray-300,'dark':$secondary);
 
@@ -29,7 +29,8 @@ $fmb-border:('light':$gray-300,'dark':$secondary);
         background-color: map-get($fmb-bg,#{$theme});
     
         .tree-off{
-            width: $fmb-size;    
+            width: $fmb-size;
+            text-align: center;    
         }
         .tree-caption{
             min-height: $fmb-size;
@@ -45,6 +46,18 @@ $fmb-border:('light':$gray-300,'dark':$secondary);
             color:map-get($fmb-color-select,#{$theme}) !important;
             background-color: map-get($fmb-bg-select,#{$theme}) !important;
         }
-
     }           
+}
+@media (min-width: 576px) { 
+    @each $theme in ('light','dark'){
+        .fmb-tree-#{$theme}{
+            .tree-off{
+                width: $fmb-size-mobile;    
+            }
+            .tree-caption{
+                min-height: $fmb-size-mobile;
+                line-height: $fmb-size-mobile;
+            }
+        }           
+    }
 }

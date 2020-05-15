@@ -1,8 +1,6 @@
 import React from 'react';
-//import 'bootstrap';
 import { binds, ut, DOM } from 'fmihel-browser-lib';
 import TreeNode from './TreeNode.jsx';
-//import './style.scss';
 
 
 export default class Tree extends React.Component {
@@ -16,9 +14,9 @@ export default class Tree extends React.Component {
         };
     }
 
-
     fromNode(...from) {
         const state = {};
+        // eslint-disable-next-line array-callback-return
         from.map((o) => {
             if (o.event === 'collapse') {
                 const idx = this.state.expandes.indexOf(o.dom);
@@ -74,7 +72,7 @@ export default class Tree extends React.Component {
 
     render() {
         const {
-            data, css, collapse, collapsing, theme, dataHashSum,
+            data, css, collapse, collapsing, theme, dataHashSum, icons, Icon,
         } = this.props;
         const { expandes, id, selected } = this.state;
         return (
@@ -88,7 +86,8 @@ export default class Tree extends React.Component {
                     selected={selected}
                     collapsing={collapsing}
                     dataHashSum={dataHashSum}
-
+                    icons={icons}
+                    Icon={Icon}
                 />)
                 }
             </div>
@@ -98,10 +97,18 @@ export default class Tree extends React.Component {
 Tree.defaultProps = {
     css: 'fmb-tree',
     collapse: true,
-    collapsing: true,
+    collapsing: false,
     id: undefined,
     theme: 'light',
     dataHashSum: '',
+    icons: {
+        common: {
+            expand: '-',
+            collapse: '+',
+            last: '>',
+        },
+    },
+    Icon: undefined,
     data: [
         {
             caption: 'Item1',
