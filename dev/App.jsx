@@ -16,7 +16,7 @@ import Tree from '../source/Tree.jsx';
 class App extends React.Component {
     constructor(p) {
         super(p);
-        binds(this, 'onPress');
+        binds(this, 'onPress', 'onTreeClick');
     }
 
     onPress() {
@@ -24,6 +24,10 @@ class App extends React.Component {
             test: ut.random_str(5),
             test2: ut.random_str(5),
         });
+    }
+
+    onTreeClick(o) {
+        console.info(o);
     }
 
     componentDidMount() {
@@ -51,11 +55,12 @@ class App extends React.Component {
                             dataHashSum={this.props.dataHashSum}
                             Icon={FontAwesomeIcon}
                             icons={icons}
+                            onClick={this.onTreeClick}
                         />
 
                     </div>
                 </AppFrame>
-                <Debug/>
+
             </Fragment>
         );
     }
@@ -92,7 +97,9 @@ const mapStateToProps = (state) => ({
     app: state.app,
     dataHashSum: ut.random_str(5),
     data2: staticData, // treeGenerate(10, 3),
-    data: treeGenerate(7, 3),
+    data: treeGenerate(4, 3),
 });
 
+App.defaultProps = {
+};
 export default connect(mapStateToProps)(App);

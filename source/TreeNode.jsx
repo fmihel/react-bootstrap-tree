@@ -1,24 +1,46 @@
 import React, { Fragment } from 'react';
-import { flex, binds, ut } from 'fmihel-browser-lib';
+import {
+    flex, binds, ut, JX,
+} from 'fmihel-browser-lib';
 
 export default class TreeNode extends React.Component {
     constructor(p) {
         super(p);
-        binds(this, 'onClick', 'isSelected');
+        binds(this, 'onClick', 'isSelected', 'onClickIcon');
 
         this.refNode = React.createRef();
+        this.refCollapse = React.createRef();
+
         this.prevCollapse = undefined;
         this.dataHashSum = '';
+        this._relay = {};
+    }
+
+    onClickIcon() {
+        if (
+            this.props.collapseOnClickIcon) {
+            this.props.toRoot({
+                event: 'collapse',
+                sender: this.refNode.current,
+                dom: this.refNode.current,
+                collapse: !this.isCollapse(),
+            },
+            {
+                event: 'select',
+                sender: this,
+                dom: this.refNode.current,
+            });
+        }
     }
 
     onClick() {
-        this.props.toRoot({
+        const params = this.props.collapseOnClickIcon ? [] : [{
             event: 'collapse',
             sender: this.refNode.current,
             dom: this.refNode.current,
-            collapse: !this.collapse(),
-        },
-        {
+            collapse: !this.isCollapse(),
+        }];
+        params.push({
             event: 'select',
             sender: this,
             dom: this.refNode.current,
@@ -29,10 +51,12 @@ export default class TreeNode extends React.Component {
             item: this.props.data,
 
         });
+
+        this.props.toRoot(...params);
     }
 
 
-    collapse(props = undefined) {
+    isCollapse(props = undefined) {
         const p = props || this.props;
         return this.refNode.current ? (p.collapse && (p.expandes.indexOf(this.refNode.current) === -1)) : p.collapse;
     }
@@ -45,12 +69,12 @@ export default class TreeNode extends React.Component {
     shouldComponentUpdate(nextProps) {
         let update = (this.dataHashSum !== nextProps.dataHashSum);
         if (!update) {
-            const nextCollapse = this.collapse(nextProps);
+            const nextCollapse = this.isCollapse(nextProps);
             update = (!nextCollapse) || (this.prevCollapse !== nextCollapse);
         }
 
         if (!update) {
-            update = this.isSelected();
+            update = this.isSelected() || this.isSelected(nextProps);
         }
 
         if (update) {
@@ -60,13 +84,50 @@ export default class TreeNode extends React.Component {
         return false;
     }
 
+    relay(name, value, cond, enableFirstTime = true) {
+        if (this._relay[name] !== value) {
+            let res;
+            if ((!enableFirstTime) && (!(name in this._relay))) {
+                res = false;
+            } else {
+                res = value === cond;
+            }
+            this._relay[name] = value;
+            return res;
+        }
+
+        return false;
+    }
+
+    componentDidMount() {
+        this.dataHashSum = this.props.dataHashSum;
+        if ($) {
+            this.$collapse = $(this.refCollapse.current);
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.animate && $) {
+            const doAnimate = () => {
+                this.$collapse.slideToggle(0, () => {
+                    this.$collapse.slideToggle(this.props.animate);
+                });
+            }; if (this.relay('prevCollapse:false', this.prevCollapse, false)) {
+                doAnimate();
+            }
+            if (this.relay('prevCollapse:true', this.prevCollapse, true, false)) {
+                doAnimate();
+            }
+        }
+    }
+
     render() {
         const {
-            data, level, toRoot, expandes, collapse, dataHashSum, selected, icons, Icon,
+            data, level, toRoot, expandes, collapse, dataHashSum, selected, icons, Icon, collapseOnClickIcon, animate,
         } = this.props;
         const { childs } = data;
         const off = [];
-        this.prevCollapse = this.collapse();
+        this.prevCollapse = this.isCollapse();
         const select = this.isSelected() ? ' tree-caption-select' : '';
         const isFolder = (childs && childs.length);
 
@@ -89,10 +150,11 @@ export default class TreeNode extends React.Component {
         };
 
         const icon = getIcon();
-
-        for (let i = 0; i < level; i++) {
-            off.push(<div key = {i} style={{ ...flex('fixed') }} className="tree-off">{i === level - 1 && icon}</div>);
+        for (let i = 0; i < level - 1; i++) {
+            off.push(<div key = {i} style={{ ...flex('fixed') }} className="tree-off"/>);
         }
+        off.push(<div key = {level - 1} style={{ ...flex('fixed') }} className="tree-off" onClick={this.onClickIcon}>{icon}</div>);
+
         return (
             <div className="tree-node ">
                 <div
@@ -101,6 +163,7 @@ export default class TreeNode extends React.Component {
                     className={`tree-caption${select}`}
                     style={{ ...flex() }}
                     onClick={this.onClick}
+                    onDoubleClick={this.onClickIcon}
                 >
                     {off}
                     <div style={{ ...flex('stretch') }}>{data.caption}</div>
@@ -110,6 +173,7 @@ export default class TreeNode extends React.Component {
                     <div
                         className="tree-childs"
                         style={{ display: this.prevCollapse ? 'none' : 'block' }}
+                        ref={this.refCollapse}
                     >
                         {childs.map((node, i) => <TreeNode
                             key={data.key ? data.key : i}
@@ -122,6 +186,8 @@ export default class TreeNode extends React.Component {
                             dataHashSum={dataHashSum}
                             icons={icons}
                             Icon={Icon}
+                            collapseOnClickIcon={collapseOnClickIcon}
+                            animate={animate}
                         />)}
 
                     </div>

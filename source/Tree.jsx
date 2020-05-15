@@ -73,6 +73,7 @@ export default class Tree extends React.Component {
     render() {
         const {
             data, css, collapse, collapsing, theme, dataHashSum, icons, Icon,
+            collapseOnClickIcon, animate,
         } = this.props;
         const { expandes, id, selected } = this.state;
         return (
@@ -88,6 +89,8 @@ export default class Tree extends React.Component {
                     dataHashSum={dataHashSum}
                     icons={icons}
                     Icon={Icon}
+                    collapseOnClickIcon={collapseOnClickIcon}
+                    animate={animate}
                 />)
                 }
             </div>
@@ -97,10 +100,12 @@ export default class Tree extends React.Component {
 Tree.defaultProps = {
     css: 'fmb-tree',
     collapse: true,
-    collapsing: false,
+    collapsing: true,
+    collapseOnClickIcon: true,
     id: undefined,
     theme: 'light',
     dataHashSum: '',
+    animate: 200,
     icons: {
         common: {
             expand: '-',
