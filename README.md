@@ -69,7 +69,7 @@ App.defaultProps = {
 |collapseOnClickIcon|bool|true| if true so collapse node after click icon or double click node|
 |animate|int|200|delay animation on collapse/expand (!!! need jQuery)|
 |data|array|[]|tree data, see data struct chapter|
-|icons|object|{common: {<br>expand: '-',<br>collapse: '+',<br>last: '>',<br>}| icons lib, see icons chapter|
+|icons|object|```{common:{ expand: '-', collapse: '+', last: '>'}```| icons lib, see icons chapter|
 |Icon|React.Component|undefined| custom component for draw icon, see Icon chapter|
 |onClick|Function|undefined|callback on click node|
 
@@ -188,7 +188,7 @@ App.defaultProps = {
  ```
 
 ## Icon from fontawesome lib
-### install fontawesome component 
+install fontawesome component 
 ```npm  i @fortawesome/fontawesome-free @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome```
 
 define ***props.icons***
