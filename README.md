@@ -3,7 +3,7 @@ bootstrap tree react component
 # Tree view react component (bootstrap compatible)
 
 ## Install
-```npm i fmihel-react-bootstrap-tree'```
+```npm i fmihel-react-bootstrap-tree```
 
 ## Simple use
 ```js
@@ -63,7 +63,7 @@ App.defaultProps = {
 |name|type|default|notes|
 |----|----|----|----|
 |id|any|undefined| id of root html element tree|
-|css|string|'fmb-tree'|css class name of root elemen tree|
+|css|string|'fmb-tree'|css class name of root element tree|
 |theme|string|''|postfix for css, Ex: if css = "myclass" and theme="light" so result classname of root "myclass-light"|
 |collapsing|bool|true|collapse other tree node after expand selected node|
 |collapseOnClickIcon|bool|true| if true so collapse node after click icon or double click node|
@@ -102,10 +102,10 @@ data:[
 
 ## icons
 Lib of icons name<br>
-`format`
+format
 ```javascript
 icons: {
-    NAME_OF ICON1: {
+    NAME_OF_ICON1: {
         expand: '-',  // symbol for expand node
         collapse: '+',// symbol for collapse node
         last: '>',    // symbol for node have not childs
@@ -115,7 +115,7 @@ icons: {
     ...
 },
  ```
- `use in data`
+ use in data
  ```javascript
  data:[
     {
@@ -129,7 +129,7 @@ icons: {
  ```
  
  ## Icon
- React component for custom draw icon. Component must by consists  ``props.icon`` as minimal.
+ React component for custom draw icon. Component must by consists  ***props.icon*** as minimal.
  Simple example:
  ```javascript
 class MyIcon extends React.Component {
@@ -142,21 +142,40 @@ class MyIcon extends React.Component {
  ```
  to use this component redefine  icons props:
  ```javascript
- Icon:MyIcon, // set custom icon component
- icons: {
-    common: {
-        expand:'https://path/path/folder-open.png',
-        collapse:'https://path/path/folder.png',
-        last:'https://path/path/file.png',    
-    },
-    //or use
-    selected_file:'https://path/path/active.png',  
-    ...
+ class App extends React.Component {
+    render() {
+        const icons = {
+            common: {
+                expand:'https://path/path/folder-open.png',
+                collapse:'https://path/path/folder.png',
+                last:'https://path/path/file.png',    
+            },
+            selected_file:'https://path/path/active.png',  
+        };
+
+        return (
+              <div className="container-fluid" >
+                <div className="row">
+                    <div className="col">
+                        Tree
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <Tree
+                            data={this.props.data}
+                            icons={icons}
+                            Icon={MyIcon}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
- ```
- in data set
- ```javascript
- data:[
+
+App.defaultProps = {
+   data:[
     {
         caption: 'folder-1', // icon from icons.common
         childs: [
@@ -165,12 +184,14 @@ class MyIcon extends React.Component {
         ],
     },
 ]
+};
  ```
 
- ## Icon from fontawesome lib
+## Icon from fontawesome lib
 ### install fontawesome component 
 ```npm  i @fortawesome/fontawesome-free @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome```
-### define `props.icons`
+
+define ***props.icons***
 ```javascript
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faFile, faFolder, faFolderOpen,faCoffeCup} from '@fortawesome/free-solid-svg-icons';
@@ -200,6 +221,7 @@ class App extends React.Component {
                         <Tree
                             data={this.props.data}
                             icons={icons}
+                            Icon={FontAwesomeIcon}
                         />
                     </div>
                 </div>
