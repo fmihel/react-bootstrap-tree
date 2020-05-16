@@ -67,17 +67,25 @@ class App extends React.Component {
 }
 
 let ID_ITER = 0;
-function treeGenerate(count = 100, deep = 2) {
+function treeGenerate(param = {}) {
     const out = [];
+    const p = {
+        count: 100,
+        deep: 2,
+        level: 0,
+        expandNum: [],
+        ...param,
+    };
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < p.count; i++) {
         const item = {
             id: ID_ITER,
             caption: `item-${ID_ITER}`,
+            expand: (p.expandNum.indexOf(i) > -1),
         };
         ID_ITER++;
-        if (deep > 1) {
-            item.childs = treeGenerate(count, deep - 1);
+        if (p.deep > 1) {
+            item.childs = treeGenerate({ ...p, deep: p.deep - 1, level: p.level + 1 });
         }
         out.push(item);
     }
@@ -85,19 +93,34 @@ function treeGenerate(count = 100, deep = 2) {
 }
 const staticData = [
     {
-        caption: 'test',
-        icon: 'file',
+        caption: 'test-1',
+        collapse: false,
         childs: [
             { caption: 'sub1' },
             { caption: 'sub2' },
+        ],
+    },
+    {
+        caption: 'test-2',
+        childs: [
+            { caption: 'sub3' },
+            { caption: 'sub4' },
+        ],
+    },
+    {
+        caption: 'test-3',
+        expand: true,
+        childs: [
+            { caption: 'sub5' },
+            { caption: 'sub6' },
         ],
     },
 ];
 const mapStateToProps = (state) => ({
     app: state.app,
     dataHashSum: ut.random_str(5),
-    data2: staticData, // treeGenerate(10, 3),
-    data: treeGenerate(4, 3),
+    // data: staticData, // treeGenerate({count:10,deep:3}),
+    data: treeGenerate({ count: 10, deep: 3, expandNum: [] }),
 });
 
 App.defaultProps = {

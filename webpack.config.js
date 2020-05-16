@@ -31,7 +31,7 @@ module.exports = {
     },
     "fmihel-browser-lib":"fmihel-browser-lib",
     jquery:'jquery',
-    bootstrap:true,
+    bootstrap:'bootstrap'
   },
   module: {
     rules: [

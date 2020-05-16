@@ -49,7 +49,7 @@ export default class TreeNode extends React.Component {
             event: 'click',
             sender: this,
             item: this.props.data,
-
+            dom: this.refNode.current,
         });
 
         this.props.toRoot(...params);
@@ -66,6 +66,19 @@ export default class TreeNode extends React.Component {
         return this.refNode.current ? (p.selected.indexOf(this.refNode.current) > -1) : false;
     }
 
+    initAfterChangeData() {
+        if (this.dataHashSum !== this.props.dataHashSum) {
+            this.dataHashSum = this.props.dataHashSum;
+            if ((this.props.data.expand === true) || (this.props.data.collapse === false)) {
+                this.props.toRoot({
+                    event: 'init',
+                    sender: this,
+                    dom: this.refNode.current,
+                });
+            }
+        }
+    }
+
     shouldComponentUpdate(nextProps) {
         let update = (this.dataHashSum !== nextProps.dataHashSum);
         if (!update) {
@@ -78,7 +91,6 @@ export default class TreeNode extends React.Component {
         }
 
         if (update) {
-            this.dataHashSum = nextProps.dataHashSum;
             return true;
         }
         return false;
@@ -100,13 +112,15 @@ export default class TreeNode extends React.Component {
     }
 
     componentDidMount() {
-        this.dataHashSum = this.props.dataHashSum;
+        this.initAfterChangeData();
         if ($) {
             this.$collapse = $(this.refCollapse.current);
         }
     }
 
     componentDidUpdate() {
+        this.initAfterChangeData();
+
         if (this.props.animate && $) {
             const doAnimate = () => {
                 this.$collapse.slideToggle(0, () => {
@@ -118,10 +132,14 @@ export default class TreeNode extends React.Component {
             if (this.relay('prevCollapse:true', this.prevCollapse, true, false)) {
                 doAnimate();
             }
+        } else {
+            this.relay('prevCollapse:false', this.prevCollapse, false);
+            this.relay('prevCollapse:true', this.prevCollapse, true, false);
         }
     }
 
     render() {
+        // console.info('node render');
         const {
             data, level, toRoot, expandes, collapse, dataHashSum, selected, icons, Icon, collapseOnClickIcon, animate,
         } = this.props;
@@ -156,9 +174,8 @@ export default class TreeNode extends React.Component {
         off.push(<div key = {level - 1} style={{ ...flex('fixed') }} className="tree-off" onClick={this.onClickIcon}>{icon}</div>);
 
         return (
-            <div className="tree-node ">
+            <div className="tree-node " id={data.id !== undefined ? data.id : ut.random_str(5)}>
                 <div
-                    id={data.id !== undefined ? data.id : ut.random_str(5)}
                     ref={this.refNode}
                     className={`tree-caption${select}`}
                     style={{ ...flex() }}

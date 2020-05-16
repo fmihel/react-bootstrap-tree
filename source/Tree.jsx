@@ -12,6 +12,11 @@ export default class Tree extends React.Component {
             selected: [],
             id: this.props.id ? this.props.id : ut.random_str(7),
         };
+        this.init = {
+            expandes: [],
+        };
+        this.lockAnimate = false;
+        this.prevClick = undefined;
     }
 
     fromNode(...from) {
@@ -39,17 +44,24 @@ export default class Tree extends React.Component {
                 }
             } else if (o.event === 'click') {
                 if (this.props.onClick) {
-                    this.props.onClick({
-                        ...o,
-                        tree: this,
-                        data: this.props.data,
-                    });
+                    if (this.prevClick !== o.dom) {
+                        this.prevClick = o.dom;
+                        this.props.onClick({
+                            ...o,
+                            tree: this,
+                            data: this.props.data,
+                        });
+                    }
                 }
             } else if (o.event === 'select') {
                 state.selected = [o.dom];
+            } else if (o.event === 'init') {
+                this.init.expandes.push(o.dom);
             }
         });
-        if (state !== {}) { this.setState(state); }
+        if (state !== {}) {
+            this.setState(state);
+        }
     }
 
     getParentNodes(from) {
@@ -64,25 +76,45 @@ export default class Tree extends React.Component {
         return out;
     }
 
-    componentDidUpdate(props) {
-        if (this.props.dataHashSum !== props.dataHashSum) {
-            this.setState({ expandes: [], selected: [] });
-        }
+    initAfterChangeData() {
+        // console.info('init', this.init.expandes);
+        this.lockAnimate = true;
+        this.setState({ expandes: this.init.expandes, selected: [] });
+        this.init.expandes = [];
     }
 
+    culcDataHashSum() {
+        // in dev
+    }
+
+    componentDidMount() {
+        this.initAfterChangeData();
+    }
+
+    componentDidUpdate(props) {
+        if (this.props.dataHashSum !== props.dataHashSum) {
+            this.initAfterChangeData();
+        }
+        this.lockAnimate = false;
+    }
+
+
     render() {
+        // console.info('tree render');
         const {
-            data, css, collapse, collapsing, theme, dataHashSum, icons, Icon,
+            data, css, collapsing, theme, dataHashSum, icons, Icon,
             collapseOnClickIcon, animate,
         } = this.props;
-        const { expandes, id, selected } = this.state;
+        const {
+            expandes, id, selected,
+        } = this.state;
         return (
             <div className={css + (theme ? `-${theme}` : '')} id={id}>
                 {data.map((node, i) => <TreeNode
                     toRoot = {this.fromNode}
                     key = {data.id ? data.id : i}
                     data={node}
-                    collapse={collapse}
+                    collapse={true}
                     expandes={expandes}
                     selected={selected}
                     collapsing={collapsing}
@@ -90,7 +122,8 @@ export default class Tree extends React.Component {
                     icons={icons}
                     Icon={Icon}
                     collapseOnClickIcon={collapseOnClickIcon}
-                    animate={animate}
+                    animate={this.lockAnimate ? 0 : animate}
+
                 />)
                 }
             </div>
@@ -98,13 +131,13 @@ export default class Tree extends React.Component {
     }
 }
 Tree.defaultProps = {
-    css: 'fmb-tree',
-    collapse: true,
+    id: undefined,
+    css: 'fmb-tree', // css корневой класс дерева
+    theme: 'light', // окончание добавляемре к имен класса, Ex: сss = 'mytree' theme = 'light' set mytree-light
+
     collapsing: true,
     collapseOnClickIcon: true,
-    id: undefined,
-    theme: 'light',
-    dataHashSum: '',
+    dataHashSum: ut.random_str(10),
     animate: 200,
     icons: {
         common: {
