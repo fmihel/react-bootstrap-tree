@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Debug from 'COMPONENTS/Debug/Debug.jsx';
 import redux from 'REDUX';
 import AppFrame from 'COMPONENTS/AppFrame/AppFrame.jsx';
-import '../scss';
+import '../style/scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faFile, faFolder, faFolderOpen,
