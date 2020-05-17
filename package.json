@@ -2,7 +2,7 @@
   "name": "fmihel-react-bootstrap-tree",
   "version": "0.0.0",
   "description": "bootstrap react component for view tree",
-  "main": "index.js",
+  "main": "dist/react-bootstrap-tree.min.js",
   "scripts": {
     "dev": "webpack-dev-server --config webpack.config.dev.js",
     "build": "webpack && webpack --prod",
