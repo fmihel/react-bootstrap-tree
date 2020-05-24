@@ -1,6 +1,6 @@
 {
   "name": "fmihel-react-bootstrap-tree",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "bootstrap react component for view tree",
   "main": "dist/react-bootstrap-tree.min.js",
   "scripts": {
