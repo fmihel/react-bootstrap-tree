@@ -29,6 +29,7 @@ $fmb-border:('light':$gray-300,'dark':$secondary);
         background-color: map-get($fmb-bg,#{$theme});
     
         .tree-off{
+            min-width: $fmb-size;
             width: $fmb-size;
             text-align: center;    
         }
@@ -52,6 +53,7 @@ $fmb-border:('light':$gray-300,'dark':$secondary);
     @each $theme in ('light','dark'){
         .fmb-tree-#{$theme}{
             .tree-off{
+                min-width: $fmb-size-mobile;
                 width: $fmb-size-mobile;    
             }
             .tree-caption{

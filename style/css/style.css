@@ -17,6 +17,7 @@
 }
 
 .fmb-tree-light .tree-off {
+	min-width: 48px;
 	width: 48px;
 	text-align: center;
 }
@@ -57,6 +58,7 @@
 }
 
 .fmb-tree-dark .tree-off {
+	min-width: 48px;
 	width: 48px;
 	text-align: center;
 }
@@ -80,6 +82,7 @@
 
 @media (min-width: 576px) {
 	.fmb-tree-light .tree-off {
+		min-width: 32px;
 		width: 32px;
 	}
 
@@ -89,6 +92,7 @@
 	}
 
 	.fmb-tree-dark .tree-off {
+		min-width: 32px;
 		width: 32px;
 	}
 
