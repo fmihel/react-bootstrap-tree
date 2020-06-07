@@ -1,16 +1,17 @@
 //@import "node_modules/bootstrap/scss/bootstrap";
 //@import "bootstrap";
 @import "~bootstrap/scss/bootstrap";
-$fmb-size : 48px;
-$fmb-size-mobile:32px;
-$fmb-color:('light':$blue,'dark':$gray-500);
-$fmb-bg:('light':$light,'dark':$dark);
-$fmb-color-hover:('light':$blue,'dark':$gray-300);
-$fmb-bg-hover:('light':$gray-200,'dark':$gray-700);
-$fmb-color-select:('light':$light,'dark':$yellow);
-$fmb-bg-select:('light':$primary,'dark':$gray-700);
 
-$fmb-border:('light':$gray-300,'dark':$secondary);
+$fmb-themes:('light','dark') !default;
+$fmb-size : 48px !default;
+$fmb-size-mobile:32px !default;
+$fmb-color:('light':$blue,'dark':$gray-500) !default;
+$fmb-bg:('light':$light,'dark':$dark) !default;
+$fmb-color-hover:('light':$blue,'dark':$gray-300) !default;
+$fmb-bg-hover:('light':$gray-200,'dark':$gray-700) !default;
+$fmb-color-select:('light':$light,'dark':$yellow) !default;
+$fmb-bg-select:('light':$primary,'dark':$gray-700) !default;
+$fmb-border:('light':$gray-300,'dark':$secondary) !default;
 
 @mixin noselect {
     -webkit-touch-callout: none; /* iOS Safari */
@@ -22,7 +23,7 @@ $fmb-border:('light':$gray-300,'dark':$secondary);
                                     supported by Chrome, Opera and Firefox */
 }
 
-@each $theme in ('light','dark'){
+@each $theme in $fmb-themes{
     .fmb-tree-#{$theme}{
         @include noselect();
         box-sizing: border-box;
