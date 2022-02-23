@@ -171,7 +171,7 @@ export default class TreeNode extends React.Component {
         for (let i = 0; i < level - 1; i++) {
             off.push(<div key = {i} style={{ ...flex('fixed') }} className="tree-off"/>);
         }
-        off.push(<div key = {level - 1} style={{ ...flex('fixed') }} className="tree-off" onClick={this.onClickIcon}>{icon}</div>);
+        off.push(<div key = {level - 1} style={{ ...flex('fixed') }} className="tree-off tree-caption-icon" onClick={this.onClickIcon}>{icon}</div>);
 
         return (
             <div className="tree-node " id={data.id !== undefined ? data.id : ut.random_str(5)}>
@@ -183,7 +183,7 @@ export default class TreeNode extends React.Component {
                     onDoubleClick={this.onClickIcon}
                 >
                     {off}
-                    <div style={{ ...flex('stretch') }}>{data.caption}</div>
+                    <div className="tree-caption-text" style={{ ...flex('stretch') }}>{data.caption}</div>
                 </div>
 
                 {isFolder && (
