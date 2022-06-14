@@ -6,7 +6,8 @@ import TreeNode from './TreeNode.jsx';
 export default class Tree extends React.Component {
     constructor(p) {
         super(p);
-        binds(this, 'fromNode');
+        this.fromNode = this.fromNode.bind(this);
+        this.select = this.select.bind(this);
         this.state = {
             expandes: [],
             selected: [],
@@ -55,6 +56,11 @@ export default class Tree extends React.Component {
                 }
             } else if (o.event === 'select') {
                 state.selected = [o.dom];
+            } else if (o.event === 'unselect') {
+                const index = state.selected.indexOf(o.dom);
+                if (index >= 0) {
+                    state.selected.splice(index, 1);
+                }
             } else if (o.event === 'init') {
                 this.init.expandes.push(o.dom);
             }
@@ -87,11 +93,69 @@ export default class Tree extends React.Component {
         // in dev
     }
 
+    /** поиск узла по id и выделение его */
+    select(id) {
+        const t = this;
+
+        $(`#${t.state.id}`).find('.tree-node').each((i, it) => {
+            if (it.id === id) {
+                const dom = $(it).find('.tree-caption')[0];
+                this.lockAnimate = true;
+                t.fromNode(
+                    {
+                        event: 'collapse',
+                        sender: dom,
+                        dom,
+                        collapse: false,
+                    },
+                    {
+                        event: 'select',
+                        sender: this,
+                        dom,
+                    },
+                );
+                return false;
+            }
+        });
+    }
+
+    static _expand(data, cond) {
+        for (let i = 0; i < data.length; i++) {
+            const it = data[i];
+            if (cond(it) === true) {
+                it.expand = true;
+                return true;
+            }
+            if (('childs' in it) && (it.childs.length > 0)) {
+                if (Tree._expand(it.childs, cond)) {
+                    it.expand = true;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /** вставит метку раскрытия узлов, до узла отвечающего условию cond(it):bool */
+    static expand(data, cond) {
+        Tree._expand(data, cond);
+        return data;
+    }
+
     componentDidMount() {
+        // разовый вызов после первого рендеринга
         this.initAfterChangeData();
+        if (this.props.onInit) {
+            this.props.onInit({ sender: this });
+        }
+    }
+
+    componentWillUnmount() {
+        // разовый после последнего рендеринга
     }
 
     componentDidUpdate(props) {
+        // каждый раз после рендеринга (кроме первого раза !)
         if (this.props.dataHashSum !== props.dataHashSum) {
             this.initAfterChangeData();
         }
@@ -100,7 +164,6 @@ export default class Tree extends React.Component {
 
 
     render() {
-        // console.info('tree render');
         const {
             data, css, collapsing, theme, dataHashSum, icons, Icon,
             collapseOnClickIcon, animate,
@@ -186,5 +249,6 @@ Tree.defaultProps = {
         },
     ],
     onClick: undefined,
+    onInit: undefined,
 
 };

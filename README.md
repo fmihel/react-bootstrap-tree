@@ -72,6 +72,12 @@ App.defaultProps = {
 |icons|object|```{common:{ expand: '-', collapse: '+', last: '>'}```| icons lib, see icons chapter|
 |Icon|React.Component|undefined| custom component for draw icon, see Icon chapter|
 |onClick|Function|undefined|callback on click node|
+|onInit|Function({sender})|undefined|callback on init |
+
+## Tree.methods
+|name|params|result|notes|
+|----|----|----|----|
+|select|id:any|undefined| selecte and expand node with id, use onInit for get tree object|
 
 ## data struct
 Example:

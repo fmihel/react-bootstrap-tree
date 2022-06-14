@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react';
 import {
-    flex, binds, ut, JX,
+    flex, ut,
 } from 'fmihel-browser-lib';
 
 export default class TreeNode extends React.Component {
     constructor(p) {
         super(p);
-        binds(this, 'onClick', 'isSelected', 'onClickIcon');
+        this.onClick = this.onClick.bind(this);
+        this.isSelected = this.isSelected.bind(this);
+        this.onClickIcon = this.onClickIcon.bind(this);
+        this.select = this.select.bind(this);
 
         this.refNode = React.createRef();
         this.refCollapse = React.createRef();
@@ -33,6 +36,16 @@ export default class TreeNode extends React.Component {
         }
     }
 
+    select(bool) {
+        this.props.toRoot([
+            {
+                event: (bool ? 'select' : 'unselect'),
+                sender: this,
+                dom: this.refNode.current,
+            },
+        ]);
+    }
+
     onClick() {
         const params = this.props.collapseOnClickIcon ? [] : [{
             event: 'collapse',
@@ -51,7 +64,6 @@ export default class TreeNode extends React.Component {
             item: this.props.data,
             dom: this.refNode.current,
         });
-
         this.props.toRoot(...params);
     }
 

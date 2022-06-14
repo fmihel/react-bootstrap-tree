@@ -16,7 +16,8 @@ import Tree from '../source/Tree.jsx';
 class App extends React.Component {
     constructor(p) {
         super(p);
-        binds(this, 'onPress', 'onTreeClick');
+        binds(this, 'onPress', 'onTreeClick', 'onTreeInit', 'onSelect');
+        this.tree = undefined;
     }
 
     onPress() {
@@ -28,6 +29,14 @@ class App extends React.Component {
 
     onTreeClick(o) {
         console.info(o);
+    }
+
+    onTreeInit({ sender }) {
+        this.tree = sender;
+    }
+
+    onSelect() {
+        this.tree.select('sub22');
     }
 
     componentDidMount() {
@@ -48,6 +57,7 @@ class App extends React.Component {
                 <AppFrame>
                     <div>
                         <button onClick={this.onPress} className="btn btn-secondary btn-sm"><i className="far fa-address-book"></i> press</button>
+                        <button onClick={this.onSelect} className="btn btn-secondary btn-sm">select</button>
                     </div>
                     <div>
                         <Tree
@@ -56,6 +66,7 @@ class App extends React.Component {
                             Icon={FontAwesomeIcon}
                             icons={icons}
                             onClick={this.onTreeClick}
+                            onInit = {this.onTreeInit}
                         />
 
                     </div>
@@ -91,13 +102,28 @@ function treeGenerate(param = {}) {
     }
     return out;
 }
-const staticData = [
+
+
+const staticData = Tree.expand([
     {
         caption: 'test-1',
-        collapse: false,
+        id: 'test',
         childs: [
             { caption: 'sub1' },
-            { caption: 'sub2' },
+            {
+                caption: 'sub2',
+                childs: [
+                    {
+                        id: 'sub21',
+                        caption: 'sub2-1',
+                    },
+                    {
+                        id: 'sub22',
+                        caption: 'sub2-2',
+
+                    },
+                ],
+            },
         ],
     },
     {
@@ -109,18 +135,17 @@ const staticData = [
     },
     {
         caption: 'test-3',
-        expand: true,
         childs: [
             { caption: 'sub5' },
             { caption: 'sub6' },
         ],
     },
-];
+], (it) => it.caption === 'test-1');
 const mapStateToProps = (state) => ({
     app: state.app,
     dataHashSum: ut.random_str(5),
-    // data: staticData, // treeGenerate({count:10,deep:3}),
-    data: treeGenerate({ count: 10, deep: 3, expandNum: [] }),
+    data: staticData, // treeGenerate({count:10,deep:3}),
+    // data: treeGenerate({ count: 10, deep: 3, expandNum: [100] }),
 });
 
 App.defaultProps = {
