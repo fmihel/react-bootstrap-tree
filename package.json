@@ -7,7 +7,7 @@
     "dev": "webpack-dev-server --config webpack.config.dev.js",
     "build": "webpack && webpack --prod",
     "build-to-path": "webpack --topath",
-    "git-push": "git push react-bootstrap-tree && git push react-bootstrap-tree --tag",
+    "git-push": "git push origin master && git push origin --tags",
     "npm-publish-patch": "npm run build && npm version patch && npm publish && npm run git-push",
     "npm-publish-minor": "npm run build && npm version minor && npm publish && npm run git-push",
     "npm-publish-major": "npm run build && npm version major && npm publish && npm run git-push"
