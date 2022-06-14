@@ -159,7 +159,7 @@ export default class TreeNode extends React.Component {
         const off = [];
         this.prevCollapse = this.isCollapse();
         const select = this.isSelected() ? ' tree-caption-select' : '';
-        const isFolder = (childs && childs.length);
+        const isFolder = !!(childs && childs.length);
 
         const getIcon = () => {
             const icon = icons[data.icon ? data.icon : 'common'];
@@ -198,29 +198,28 @@ export default class TreeNode extends React.Component {
                     <div className="tree-caption-text" style={{ ...flex('stretch') }}>{data.caption}</div>
                 </div>
 
-                {isFolder && (
-                    <div
-                        className="tree-childs"
-                        style={{ display: this.prevCollapse ? 'none' : 'block' }}
-                        ref={this.refCollapse}
-                    >
-                        {childs.map((node, i) => <TreeNode
-                            key={data.key ? data.key : i}
-                            collapse={collapse}
-                            data={node}
-                            level={level + 1}
-                            toRoot={toRoot}
-                            expandes={expandes}
-                            selected={selected}
-                            dataHashSum={dataHashSum}
-                            icons={icons}
-                            Icon={Icon}
-                            collapseOnClickIcon={collapseOnClickIcon}
-                            animate={animate}
-                        />)}
+                {isFolder && <div
+                    className="tree-childs"
+                    style={{ display: this.prevCollapse ? 'none' : 'block' }}
+                    ref={this.refCollapse}
+                >
+                    {childs.map((node, i) => <TreeNode
+                        key={data.key ? data.key : i}
+                        collapse={collapse}
+                        data={node}
+                        level={level + 1}
+                        toRoot={toRoot}
+                        expandes={expandes}
+                        selected={selected}
+                        dataHashSum={dataHashSum}
+                        icons={icons}
+                        Icon={Icon}
+                        collapseOnClickIcon={collapseOnClickIcon}
+                        animate={animate}
+                    />)}
 
-                    </div>
-                )}
+                </div>
+                }
             </div>
         );
     }

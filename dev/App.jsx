@@ -129,8 +129,8 @@ const staticData = Tree.expand([
     {
         caption: 'test-2',
         childs: [
-            { caption: 'sub3' },
-            { caption: 'sub4' },
+            // { caption: 'sub3' },
+            // { caption: 'sub4' },
         ],
     },
     {
