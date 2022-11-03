@@ -1,31 +1,28 @@
-const path = require('path');
-
 module.exports = {
     env: {
         browser: true,
-        commonjs: true,
-        es6: true,
+        es2021: true,
+        node: true,
     },
-    // "extends": "eslint:recommended",
-    extends: 'airbnb/base',
-    parser: 'babel-eslint',
+    extends: [
+        'plugin:react/recommended',
+        'airbnb',
+    ],
     parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
-        },
-        ecmaVersion: 2018,
+        ecmaVersion: 'latest',
         sourceType: 'module',
     },
     plugins: [
         'react',
     ],
-    settings: {
+    /* settings: {
         'import/resolver': {
             webpack: {
-                config: path.resolve('webpack.config.js'),
+                config:'./webpack.config.js',
             },
         },
     },
+    */
     globals: {
         $: true,
 
@@ -46,13 +43,18 @@ module.exports = {
         'no-underscore-dangle': 'off',
         'max-len': 'off',
         'import/no-extraneous-dependencies': 'off',
+        'react/jsx-indent': [
+            1,
+            4,
+        ],
+        'react/jsx-indent-props': [
+            1,
+            4,
+        ],
+        'react/sort-comp': 'off',
         indent: [
             'error',
             4,
-        ],
-        'linebreak-style': [
-            'error',
-            'windows',
         ],
         quotes: [
             'error',
