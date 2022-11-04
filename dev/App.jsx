@@ -1,12 +1,11 @@
-import React, { Fragment } from 'react';
-import {
-    binds, ut,
-} from 'fmihel-browser-lib';
+/* eslint-disable react/prop-types */
+/* eslint-disable react/no-unused-class-component-methods */
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable spaced-comment */
+import React from 'react';
+import { ut } from 'fmihel-browser-lib';
 import { connect } from 'react-redux';
-import Debug from 'COMPONENTS/Debug/Debug.jsx';
-import redux from 'REDUX';
-import AppFrame from 'COMPONENTS/AppFrame/AppFrame.jsx';
-import '../style/scss';
+//import '../style/style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faFile, faFolder, faFolderOpen,
@@ -16,15 +15,7 @@ import Tree from '../source/Tree.jsx';
 class App extends React.Component {
     constructor(p) {
         super(p);
-        binds(this, 'onPress', 'onTreeClick', 'onTreeInit', 'onSelect');
         this.tree = undefined;
-    }
-
-    onPress() {
-        redux.actions.debug({
-            test: ut.random_str(5),
-            test2: ut.random_str(5),
-        });
     }
 
     onTreeClick(o) {
@@ -43,6 +34,7 @@ class App extends React.Component {
     }
 
     render() {
+        const { dataHashSum, data } = this.props;
         const icons = {
             common: {
                 expand: faFolderOpen,
@@ -53,26 +45,22 @@ class App extends React.Component {
             file: [faFile],
         };
         return (
-            <Fragment>
-                <AppFrame>
-                    <div>
-                        <button onClick={this.onPress} className="btn btn-secondary btn-sm"><i className="far fa-address-book"></i> press</button>
-                        <button onClick={this.onSelect} className="btn btn-secondary btn-sm">select</button>
-                    </div>
-                    <div>
-                        <Tree
-                            data={this.props.data}
-                            dataHashSum={this.props.dataHashSum}
-                            Icon={FontAwesomeIcon}
-                            icons={icons}
-                            onClick={this.onTreeClick}
-                            onInit = {this.onTreeInit}
-                        />
+            <div>
+                <div>
+                    <button type="button">press</button>
+                </div>
+                <div>
+                    <Tree
+                        data={data}
+                        dataHashSum={dataHashSum}
+                        Icon={FontAwesomeIcon}
+                        icons={icons}
+                        onClick={this.onTreeClick}
+                        onInit={this.onTreeInit}
+                    />
 
-                    </div>
-                </AppFrame>
-
-            </Fragment>
+                </div>
+            </div>
         );
     }
 }
@@ -103,51 +91,16 @@ function treeGenerate(param = {}) {
     return out;
 }
 
-
-const staticData = Tree.expand([
-    {
-        caption: 'test-1',
-        id: 'test',
-        childs: [
-            { caption: 'sub1' },
-            {
-                caption: 'sub2',
-                childs: [
-                    {
-                        id: 'sub21',
-                        caption: 'sub2-1',
-                    },
-                    {
-                        id: 'sub22',
-                        caption: 'sub2-2',
-
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        caption: 'test-2',
-        childs: [
-            // { caption: 'sub3' },
-            // { caption: 'sub4' },
-        ],
-    },
-    {
-        caption: 'test-3',
-        childs: [
-            { caption: 'sub5' },
-            { caption: 'sub6' },
-        ],
-    },
-], (it) => it.caption === 'test-1');
 const mapStateToProps = (state) => ({
     app: state.app,
     dataHashSum: ut.random_str(5),
-    data: staticData, // treeGenerate({count:10,deep:3}),
-    // data: treeGenerate({ count: 10, deep: 3, expandNum: [100] }),
+    data: treeGenerate({ count: 10, deep: 3 }),
+    //data: treeGenerate({ count: 10, deep: 3, expandNum: [100] }),
 });
 
 App.defaultProps = {
+    data: [],
+    dataHashSum: '',
 };
+
 export default connect(mapStateToProps)(App);

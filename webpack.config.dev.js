@@ -7,7 +7,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const SOURCE_PATH = './dev/';
 const PUBLIC_PATH = './public/';
-const TEMPLATE_PATH = './dev/template/';
 const MEDIA_PATH = './dev/media/';
 const PORT = 3000;
 module.exports = {
@@ -76,7 +75,7 @@ module.exports = {
             jQuery: 'jquery',
         }),
         new HtmlWebPackPlugin({
-            template: `${TEMPLATE_PATH}index.html`,
+            template: path.join(SOURCE_PATH,'index.html'),
             filename: './index.html',
         }),
         new CopyWebpackPlugin([
