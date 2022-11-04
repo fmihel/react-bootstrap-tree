@@ -92,7 +92,7 @@ function treeGenerate(param = {}) {
 const mapStateToProps = (state) => ({
     app: state.app,
     dataHashSum: ut.random_str(5),
-    data: treeGenerate({ count: 5, deep: 2 }),
+    data: treeGenerate({ count: 2, deep: 3 }),
 });
 
 App.defaultProps = {

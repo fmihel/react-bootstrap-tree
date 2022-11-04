@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import TreeNode from './TreeNode.jsx';
 
 export default class TreeNodes extends React.Component {
     constructor(p) {
@@ -26,26 +27,28 @@ export default class TreeNodes extends React.Component {
             idName,
             captionName,
             childsName,
+            level,
         } = this.props;
         return (
-            <div>
+            <>
                 {data.map((item) => (
                     <div key={item[idName]} className="tree-node" id={item[idName]}>
-                        <div className="tree-caption">
-
-                            {item[captionName]}
-                        </div>
-                        {(childsName in item && item[childsName].length)
-                        ?? (
+                        <TreeNode
+                            caption={item[captionName]}
+                            level={level}
+                        />
+                        {((childsName in item) && item[childsName].length > 0)
+                        && (
                             <TreeNodes
                                 {...this.props}
+                                level={level + 1}
                                 data={item[childsName]}
 
                             />
                         )}
                     </div>
                 ))}
-            </div>
+            </>
         );
     }
 }
@@ -57,4 +60,5 @@ TreeNodes.defaultProps = {
     setup: {},
     onClick: undefined,
     onInit: undefined,
+    level: 0,
 };

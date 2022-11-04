@@ -1,30 +1,22 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React from 'react';
 
-export default class TreeNode extends React.Component {
-    constructor(p) {
-        super(p);
-    }
-
-    componentDidMount() {
-        // разовый вызов после первого рендеринга
-    }
-
-    componentWillUnmount() {
-        // разовый после последнего рендеринга
-    }
-
-    componentDidUpdate(prevProps, prevState, prevContext) {
-        // каждый раз после рендеринга (кроме первого раза !)
-    }
-
-    render() {
-        return (
-            <div>TreeNode</div>
-        );
-    }
-}
-TreeNode.defaultProps = {
-    id: undefined,
-    caption: '',
+const map = (count, callback) => {
+    const out = [];
+    for (let i = 0; i < count; i++) out.push(callback(i));
+    return out;
 };
+
+// eslint-disable-next-line func-names
+export default function ({ level = 0, caption = '' }) {
+    const text = 'TreeNode';
+
+    return (
+        <div className="tree-item">
+            {map(level, (i) => <div key={i} className="tree-level" />)}
+            <div className="tree-caption">
+                {caption}
+            </div>
+        </div>
+    );
+}
