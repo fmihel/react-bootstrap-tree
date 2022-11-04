@@ -1,66 +1,10 @@
-//@import "node_modules/bootstrap/scss/bootstrap";
-//@import "bootstrap";
-//@import "~bootstrap/scss/bootstrap";
 
-$fmb-themes:('light','dark') !default;
-$fmb-size : 48px !default;
-$fmb-size-mobile:32px !default;
-$fmb-color:('light':$blue,'dark':$gray-500) !default;
-$fmb-bg:('light':$light,'dark':$dark) !default;
-$fmb-color-hover:('light':$blue,'dark':$gray-300) !default;
-$fmb-bg-hover:('light':$gray-200,'dark':$gray-700) !default;
-$fmb-color-select:('light':$light,'dark':$yellow) !default;
-$fmb-bg-select:('light':$primary,'dark':$gray-700) !default;
-$fmb-border:('light':$gray-300,'dark':$secondary) !default;
-
-@mixin noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Old versions of Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome, Opera and Firefox */
-}
-
-@each $theme in $fmb-themes{
-    .fmb-tree-#{$theme}{
-        @include noselect();
-        box-sizing: border-box;
-        background-color: map-get($fmb-bg,#{$theme});
-    
-        .tree-off{
-            min-width: $fmb-size;
-            width: $fmb-size;
-            text-align: center;    
-        }
-        .tree-caption{
-            min-height: $fmb-size;
-            line-height: $fmb-size;
-            color:map-get($fmb-color,#{$theme});
-            border-bottom: 1px solid map-get($fmb-border,#{$theme});
-            &:hover {     
-                color:map-get($fmb-color-hover,#{$theme});
-                background-color: map-get($fmb-bg-hover,#{$theme});
-            }
-        }
-        .tree-caption-select{
-            color:map-get($fmb-color-select,#{$theme}) !important;
-            background-color: map-get($fmb-bg-select,#{$theme}) !important;
-        }
-    }           
-}
-@media (min-width: 576px) { 
-    @each $theme in ('light','dark'){
-        .fmb-tree-#{$theme}{
-            .tree-off{
-                min-width: $fmb-size-mobile;
-                width: $fmb-size-mobile;    
-            }
-            .tree-caption{
-                min-height: $fmb-size-mobile;
-                line-height: $fmb-size-mobile;
-            }
-        }           
+.tree{
+    border: 1px solid red;
+    .tree-node{
+        border: 1px solid blue;
+        min-height: 32px;
+        line-height: 32px;
+        
     }
 }

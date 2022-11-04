@@ -5,7 +5,7 @@
 import React from 'react';
 import { ut } from 'fmihel-browser-lib';
 import { connect } from 'react-redux';
-//import '../style/style.scss';
+import '../style/style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faFile, faFolder, faFolderOpen,
@@ -34,7 +34,7 @@ class App extends React.Component {
     }
 
     render() {
-        const { dataHashSum, data } = this.props;
+        const { data } = this.props;
         const icons = {
             common: {
                 expand: faFolderOpen,
@@ -44,6 +44,7 @@ class App extends React.Component {
             folder: [faFolder],
             file: [faFile],
         };
+        console.log('data', data);
         return (
             <div>
                 <div>
@@ -52,7 +53,6 @@ class App extends React.Component {
                 <div>
                     <Tree
                         data={data}
-                        dataHashSum={dataHashSum}
                         Icon={FontAwesomeIcon}
                         icons={icons}
                         onClick={this.onTreeClick}
@@ -72,7 +72,6 @@ function treeGenerate(param = {}) {
         count: 100,
         deep: 2,
         level: 0,
-        expandNum: [],
         ...param,
     };
 
@@ -80,7 +79,6 @@ function treeGenerate(param = {}) {
         const item = {
             id: ID_ITER,
             caption: `item-${ID_ITER}`,
-            expand: (p.expandNum.indexOf(i) > -1),
         };
         ID_ITER++;
         if (p.deep > 1) {
@@ -94,13 +92,10 @@ function treeGenerate(param = {}) {
 const mapStateToProps = (state) => ({
     app: state.app,
     dataHashSum: ut.random_str(5),
-    data: treeGenerate({ count: 10, deep: 3 }),
-    //data: treeGenerate({ count: 10, deep: 3, expandNum: [100] }),
+    data: treeGenerate({ count: 5, deep: 2 }),
 });
 
 App.defaultProps = {
-    data: [],
-    dataHashSum: '',
 };
 
 export default connect(mapStateToProps)(App);

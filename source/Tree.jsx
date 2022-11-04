@@ -1,5 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import TreeNodes from './TreeNodes.jsx';
 
 export default class Tree extends React.Component {
     constructor(p) {
@@ -20,10 +22,18 @@ export default class Tree extends React.Component {
 
     render() {
         return (
-            <div>Tree</div>
+            <div className="tree">
+                <TreeNodes {...this.props} />
+            </div>
         );
     }
 }
 Tree.defaultProps = {
-// default
+    data: [],
+    idName: 'id',
+    captionName: 'caption',
+    childsName: 'childs',
+    setup: {},
+    onClick: undefined,
+    onInit: undefined,
 };
