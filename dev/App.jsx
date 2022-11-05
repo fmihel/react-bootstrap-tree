@@ -15,11 +15,18 @@ import Tree from '../source/Tree.jsx';
 class App extends React.Component {
     constructor(p) {
         super(p);
+        this.onTreeClick = this.onTreeClick.bind(this);
         this.tree = undefined;
+        this.state = {
+            setup: {
+                0: { expand: true },
+            },
+        };
     }
 
     onTreeClick(o) {
-        console.info(o);
+        console.log(o);
+        this.setState({ setup: o.setup });
     }
 
     onTreeInit({ sender }) {
@@ -35,6 +42,7 @@ class App extends React.Component {
 
     render() {
         const { data } = this.props;
+        const { setup } = this.state;
         const icons = {
             common: {
                 expand: faFolderOpen,
@@ -53,6 +61,7 @@ class App extends React.Component {
                 <div>
                     <Tree
                         data={data}
+                        setup={setup}
                         Icon={FontAwesomeIcon}
                         icons={icons}
                         onClick={this.onTreeClick}
@@ -92,7 +101,7 @@ function treeGenerate(param = {}) {
 const mapStateToProps = (state) => ({
     app: state.app,
     dataHashSum: ut.random_str(5),
-    data: treeGenerate({ count: 2, deep: 3 }),
+    data: treeGenerate({ count: 10, deep: 4 }),
 });
 
 App.defaultProps = {

@@ -7,6 +7,20 @@ import TreeNode from './TreeNode.jsx';
 export default class TreeNodes extends React.Component {
     constructor(p) {
         super(p);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick({ item }) {
+        const { onClick, idName, setup } = this.props;
+        if (onClick) {
+            const newSetup = { ...setup };
+            const itemProp = item[idName];
+            if (!(itemProp in newSetup)) {
+                newSetup[itemProp] = { expand: false };
+            }
+            newSetup[itemProp].expand = !newSetup[itemProp].expand;
+            onClick({ item, setup: newSetup });
+        }
     }
 
     componentDidMount() {
@@ -28,7 +42,12 @@ export default class TreeNodes extends React.Component {
             captionName,
             childsName,
             level,
+            setup,
         } = this.props;
+        const expand = (item) => {
+            const idProp = item[idName];
+            return ((idProp in setup) && (setup[idProp].expand));
+        };
         return (
             <>
                 {data.map((item) => (
@@ -36,8 +55,10 @@ export default class TreeNodes extends React.Component {
                         <TreeNode
                             caption={item[captionName]}
                             level={level}
+                            onClick={this.onClick}
+                            item={item}
                         />
-                        {((childsName in item) && item[childsName].length > 0)
+                        {(expand(item) && (childsName in item) && item[childsName].length > 0)
                         && (
                             <TreeNodes
                                 {...this.props}
