@@ -2,9 +2,10 @@
 .tree{
     box-sizing: border-box;
 
-    border: 1px solid red;
+    //border: 1px solid red;
     overflow: hidden;
     .tree-item{
+        cursor: pointer;
         border-bottom: 1px solid blue;
 
         min-height: 32px;
@@ -16,7 +17,9 @@
         justify-content: flex-start;
         align-content: stretch;
         align-items: stretch;
-
+        &:hover{
+            background-color: rgb(235, 235, 235);
+        }
         .tree-level{
             min-width: 32px;
             width: 32px;
@@ -31,4 +34,8 @@
        
 
     }
+}
+.tree-item-select{
+    background-color: blue !important;
+    color:white !important;
 }

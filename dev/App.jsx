@@ -3,7 +3,6 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable spaced-comment */
 import React from 'react';
-import { ut } from 'fmihel-browser-lib';
 import { connect } from 'react-redux';
 import '../style/style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,7 +55,7 @@ class App extends React.Component {
                 <div>
                     <button type="button">press</button>
                 </div>
-                <div>
+                <div style={{ height: 500, overflow: 'auto', border: '1px solid gray' }}>
                     <Tree
                         data={data}
                         setup={setup}

@@ -36,4 +36,5 @@ Tree.defaultProps = {
     setup: {},
     onClick: undefined,
     onInit: undefined,
+
 };
