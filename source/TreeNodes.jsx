@@ -8,10 +8,16 @@ export default class TreeNodes extends React.Component {
     constructor(p) {
         super(p);
         this.onClick = this.onClick.bind(this);
+        this.state = {
+            animateExpand: false,
+            animateCollapse: false,
+        };
     }
 
     onClick({ item }) {
-        const { onClick, idName, setup } = this.props;
+        const {
+            onClick, idName, setup, animate,
+        } = this.props;
         if (onClick) {
             const newSetup = { ...setup };
             const itemProp = item[idName];
@@ -19,6 +25,13 @@ export default class TreeNodes extends React.Component {
                 newSetup[itemProp] = { expand: false };
             }
             newSetup[itemProp].expand = !newSetup[itemProp].expand;
+            if (animate > 0) {
+                if (newSetup[itemProp].expand) {
+                    this.setState({ animateExpand: itemProp });
+                } else {
+                    this.setState({ animateCollapse: itemProp });
+                }
+            }
             onClick({ item, setup: newSetup });
         }
     }
@@ -33,6 +46,20 @@ export default class TreeNodes extends React.Component {
 
     componentDidUpdate(prevProps, prevState, prevContext) {
         // каждый раз после рендеринга (кроме первого раза !)
+        const { animateExpand, animateCollapse } = this.state;
+        if (prevState.animateExpand !== animateExpand && animateExpand !== 'false') {
+            $('.tree').find(`#${animateExpand}`).find('.tree-childs')
+                .slideUp(0)
+                .slideDown(200, () => {
+                    this.setState({ animateExpand: false });
+                });
+        }
+        if (prevState.animateCollapse !== animateCollapse && animateCollapse !== 'false') {
+            $('.tree').find(`#${animateCollapse}`).find('.tree-childs')
+                .slideUp(200, () => {
+                    this.setState({ animateCollapse: false });
+                });
+        }
     }
 
     render() {
@@ -44,9 +71,11 @@ export default class TreeNodes extends React.Component {
             level,
             setup,
         } = this.props;
+        const { animateExpand, animateCollapse } = this.state;
+
         const expand = (item) => {
             const idProp = item[idName];
-            return ((idProp in setup) && (setup[idProp].expand));
+            return (animateExpand === idProp || animateCollapse === idProp || ((idProp in setup) && (setup[idProp].expand)));
         };
         return (
             <>
@@ -60,12 +89,14 @@ export default class TreeNodes extends React.Component {
                         />
                         {(expand(item) && (childsName in item) && item[childsName].length > 0)
                         && (
-                            <TreeNodes
-                                {...this.props}
-                                level={level + 1}
-                                data={item[childsName]}
+                            <div className="tree-childs">
+                                <TreeNodes
+                                    {...this.props}
+                                    level={level + 1}
+                                    data={item[childsName]}
 
-                            />
+                                />
+                            </div>
                         )}
                     </div>
                 ))}
@@ -82,4 +113,5 @@ TreeNodes.defaultProps = {
     onClick: undefined,
     onInit: undefined,
     level: 0,
+    animate: 200,
 };

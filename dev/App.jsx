@@ -19,7 +19,6 @@ class App extends React.Component {
         this.tree = undefined;
         this.state = {
             setup: {
-                0: { expand: true },
             },
         };
     }
@@ -52,7 +51,6 @@ class App extends React.Component {
             folder: [faFolder],
             file: [faFile],
         };
-        console.log('data', data);
         return (
             <div>
                 <div>
@@ -66,6 +64,7 @@ class App extends React.Component {
                         icons={icons}
                         onClick={this.onTreeClick}
                         onInit={this.onTreeInit}
+                        animate={200}
                     />
 
                 </div>
@@ -100,8 +99,7 @@ function treeGenerate(param = {}) {
 
 const mapStateToProps = (state) => ({
     app: state.app,
-    dataHashSum: ut.random_str(5),
-    data: treeGenerate({ count: 10, deep: 4 }),
+    data: treeGenerate({ count: 10, deep: 5 }),
 });
 
 App.defaultProps = {
