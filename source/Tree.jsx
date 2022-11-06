@@ -54,11 +54,26 @@ const _each = (tree, callbackOrId, param = Tree.common, parent = 'root') => {
 
 const _map = (childs, callback, param = Tree.common, parent = 'root') => childs.map((item, i) => {
     const child = { ...item };
-    if (param.childsName in item && child[param.childsName]) {
+    if (param.childsName in item && child[param.childsName] && child[param.childsName].length) {
         child[param.childsName] = _map(child[param.childsName], callback, param, child);
     }
     return callback(child, parent);
 });
+
+const _filter = (childs, callback, param = Tree.common, parent = 'root') => {
+    const out = [];
+    for (let i = 0; i < childs.length; i++) {
+        const child = { ...childs[i] };
+        if (callback(child, parent) === true) {
+            if (param.childsName in child && child[param.childsName] && child[param.childsName].length) {
+                child[param.childsName] = _filter(child[param.childsName], callback, param, child);
+            }
+            out.push(child);
+        }
+    }
+
+    return out;
+};
 
 Tree.each = (tree, callbackOrId, param = Tree.common) => _each(tree, callbackOrId, param);
 
@@ -112,6 +127,24 @@ Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
         return item;
     }, param);
     return out;
+};
+
+Tree.filter = (tree, callback, param = Tree.common) => _filter(tree, callback, param);
+
+Tree.move = (tree, id, beforeID, param = Tree.common) => {
+    const item = _each(tree, id, param);
+    const out = _filter(tree, (it) => (it[param.idName] != item[param.idName]), param);
+    const parent = Tree.parent(out, beforeID, param);
+    if (parent === 'root') {
+        out.push(item);
+    } else {
+        parent[param.childsName].push(item);
+    }
+    return out;
+};
+
+Tree.clone = (tree, id, param = Tree.common) => {
+
 };
 
 export default Tree;

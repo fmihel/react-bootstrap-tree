@@ -44,7 +44,7 @@ class App extends React.Component {
         this.state = {
             setup: {
             },
-            data: treeGenerate({ count: 5, deep: 2 }),
+            data: treeGenerate({ count: 10, deep: 5 }),
         };
         this.current = false;
     }
