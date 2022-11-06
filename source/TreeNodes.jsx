@@ -42,7 +42,7 @@ export default class TreeNodes extends React.Component {
                 }
             }
 
-            onClick({ item, setup: newSetup });
+            onClick({ [idName]: item[idName], item, setup: newSetup });
         }
     }
 
