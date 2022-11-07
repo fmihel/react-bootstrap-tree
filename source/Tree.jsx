@@ -8,9 +8,11 @@ function Tree({
     idName = Tree.common.idName,
     captionName = Tree.common.captionName,
     childsName = Tree.common.childsName,
+    IconComponent = Tree.common.IconComponent,
+    icons = Tree.common.icons,
     setup = {},
     onClick = undefined,
-
+    onGetIcon = undefined,
 }) {
     return (
         <div className="tree">
@@ -21,6 +23,10 @@ function Tree({
                 childsName={childsName}
                 setup={setup}
                 onClick={onClick}
+                IconComponent={IconComponent}
+                icons={icons}
+                onGetIcon={onGetIcon}
+
             />
         </div>
     );
@@ -30,6 +36,12 @@ Tree.common = {
     idName: 'id',
     captionName: 'caption',
     childsName: 'childs',
+    IconComponent: undefined,
+    icons: {
+        expand: '',
+        collapse: '',
+        file: '',
+    },
 };
 
 const _each = (tree, callbackOrId, param = Tree.common, parent = 'root') => {
@@ -93,7 +105,15 @@ Tree.parent = (tree, callbackOrId, param = Tree.common) => {
     }, param);
     return out;
 };
-
+Tree.parents = (tree, callbackOrId, param = Tree.common) => {
+    const out = [];
+    let parent = Tree.parent(tree, callbackOrId, param);
+    while (parent && parent !== 'root') {
+        out.push(parent);
+        parent = Tree.parent(tree, parent[param.idName], param);
+    }
+    return out;
+};
 Tree.childs = (tree, callbackOrId, param = Tree.common) => {
     const parent = Tree.parent(tree, callbackOrId, param);
     if (parent === 'root') {

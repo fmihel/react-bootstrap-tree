@@ -17,6 +17,7 @@
         justify-content: flex-start;
         align-content: stretch;
         align-items: stretch;
+
         &:hover{
             background-color: rgb(61, 61, 61);
         }
@@ -28,6 +29,13 @@
         .tree-caption{
             flex: 1 1 auto;
             //border: 1px dashed green;
+        }
+        .tree-icon{
+            max-width: 32px !important;
+            width: 32px !important;
+            height: 100% !important;
+            text-align: center;
+            
         }
     }
     .tree-node{

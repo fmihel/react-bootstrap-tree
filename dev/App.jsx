@@ -10,10 +10,20 @@ import './App.scss';
 import '../style/Tree.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faFile, faFolder, faFolderOpen,
+    faFile, faFolder, faFolderOpen, faAddressBook,
 } from '@fortawesome/free-solid-svg-icons';
 import { ut } from 'fmihel-browser-lib';
 import Tree from '../source/Tree.jsx';
+
+Tree.common = {
+    ...Tree.common,
+    IconComponent: FontAwesomeIcon,
+    icons: {
+        expand: faFolderOpen,
+        collapse: faFolder,
+        file: faFile,
+    },
+};
 
 let ID_ITER = 0;
 function treeGenerate(param = {}) {
@@ -52,7 +62,7 @@ class App extends React.Component {
         this.state = {
             setup: {
             },
-            data: treeGenerate({ count: 5, deep: 2 }),
+            data: treeGenerate({ count: 7, deep: 2 }),
         };
         this.current = false;
         this.selectForMove = false;
@@ -147,15 +157,6 @@ class App extends React.Component {
 
     render() {
         const { setup, data } = this.state;
-        const icons = {
-            common: {
-                expand: faFolderOpen,
-                collapse: faFolder,
-                last: faFile,
-            },
-            folder: [faFolder],
-            file: [faFile],
-        };
         return (
             <div>
                 <div>
@@ -170,11 +171,17 @@ class App extends React.Component {
                     <Tree
                         data={data}
                         setup={setup}
-                        Icon={FontAwesomeIcon}
-                        icons={icons}
                         onClick={this.onTreeClick}
                         onInit={this.onTreeInit}
                         animate={0}
+                        onGetIcon={({ item, expand }) => {
+                            if (item.id == 40) return faAddressBook;
+                            if (item.id == 8) return false;
+                            if (ut.get(item, 'childs', 'length', false)) {
+                                return expand ? faFolderOpen : faFolder;
+                            }
+                            return faFile;
+                        }}
                     />
 
                 </div>

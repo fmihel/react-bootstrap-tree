@@ -81,6 +81,9 @@ export default class TreeNodes extends React.Component {
             childsName,
             level,
             setup,
+            IconComponent,
+            icons,
+            onGetIcon,
         } = this.props;
         const { animateExpand, animateCollapse } = this.state;
 
@@ -92,6 +95,18 @@ export default class TreeNodes extends React.Component {
             const idProp = item[idName];
             return ((idProp in setup) && (setup[idProp].select));
         };
+
+        const getIcon = (item) => {
+            const expnd = expand(item);
+            if (onGetIcon) {
+                return onGetIcon({ item, expand: expnd });
+            }
+            const isFolder = (childsName in item);
+            if (isFolder) {
+                return expnd ? icons.expand : icons.collapse;
+            }
+            return icons.file;
+        };
         return (
             <>
                 {data.map((item) => (
@@ -102,6 +117,8 @@ export default class TreeNodes extends React.Component {
                             onClick={this.onClick}
                             item={item}
                             select={select(item)}
+                            IconComponent={IconComponent}
+                            icon={IconComponent ? getIcon(item) : ''}
                         />
                         {(expand(item) && (childsName in item) && item[childsName].length > 0)
                         && (
@@ -130,4 +147,6 @@ TreeNodes.defaultProps = {
     onInit: undefined,
     level: 1,
     animate: 200,
+    IconComponent: undefined,
+    icons: {},
 };

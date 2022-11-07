@@ -11,20 +11,25 @@ const map = (count, callback) => {
 
 // eslint-disable-next-line func-names
 export default function ({
-    item = {}, level = 0,
+    item = {},
+    level = 0,
     caption = '',
     onClick = undefined,
     select = false,
+    IconComponent = undefined,
+    icon = undefined,
 }) {
     const click = () => {
         onClick({ item });
     };
+    const cLevel = IconComponent ? level - 1 : level;
     return (
         <div
             className={`tree-item${select ? ' tree-item-select' : ''}`}
             onClick={click}
         >
-            {map(level, (i) => <div key={i} className="tree-level" />)}
+            {map(cLevel, (i) => <div key={i} className="tree-level" />)}
+            {IconComponent && <div className="tree-icon">{icon && <IconComponent icon={icon} />}</div>}
             <div className="tree-caption">
                 {caption}
             </div>
