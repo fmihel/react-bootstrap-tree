@@ -1,14 +1,18 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unused-class-component-methods */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable spaced-comment */
+
 import React from 'react';
 import { connect } from 'react-redux';
-import '../style/style.scss';
+import './App.scss';
+import '../style/Tree.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faFile, faFolder, faFolderOpen,
 } from '@fortawesome/free-solid-svg-icons';
+import { ut } from 'fmihel-browser-lib';
 import Tree from '../source/Tree.jsx';
 
 let ID_ITER = 0;
@@ -38,13 +42,15 @@ class App extends React.Component {
     constructor(p) {
         super(p);
         this.onTreeClick = this.onTreeClick.bind(this);
-        this.onPress = this.onPress.bind(this);
+        this.onUp = this.onUp.bind(this);
         this.onDown = this.onDown.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.onInsert = this.onInsert.bind(this);
         this.tree = undefined;
         this.state = {
             setup: {
             },
-            data: treeGenerate({ count: 10, deep: 5 }),
+            data: treeGenerate({ count: 3, deep: 2 }),
         };
         this.current = false;
     }
@@ -63,7 +69,7 @@ class App extends React.Component {
         this.tree.select('sub22');
     }
 
-    onPress() {
+    onUp() {
         const { data } = this.state;
         const { current } = this;
         const childs = Tree.childs(data, current);
@@ -105,6 +111,25 @@ class App extends React.Component {
         }
     }
 
+    onDelete() {
+        this.setState((prev) => ({
+            data: Tree.filter(prev.data, (item) => item.id !== this.current),
+        }));
+    }
+
+    onInsert() {
+        const data = Tree.clone(this.state.data);
+        let id = ut.random_str(5);
+        while (Tree.each(data, id)) { id = ut.random_str(5); }
+
+        const current = Tree.each(data, this.current);
+
+        if (!('childs' in current)) current.childs = [];
+        current.childs.push({ id, caption: `new - ${id}` });
+        console.log('current', current, data);
+        this.setState({ data });
+    }
+
     componentDidMount() {
     }
 
@@ -122,8 +147,10 @@ class App extends React.Component {
         return (
             <div>
                 <div>
-                    <button type="button" onClick={this.onPress}>up</button>
+                    <button type="button" onClick={this.onUp}>up</button>
                     <button type="button" onClick={this.onDown}>down</button>
+                    <button type="button" onClick={this.onInsert}>insert</button>
+                    <button type="button" onClick={this.onDelete}>delete</button>
                 </div>
                 <div style={{ height: 500, overflow: 'auto', border: '1px solid gray' }}>
                     <Tree

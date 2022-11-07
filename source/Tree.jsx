@@ -52,12 +52,13 @@ const _each = (tree, callbackOrId, param = Tree.common, parent = 'root') => {
     return undefined;
 };
 
-const _map = (childs, callback, param = Tree.common, parent = 'root') => childs.map((item, i) => {
+const _map = (childs, callback = undefined, param = Tree.common, parent = 'root') => childs.map((item, i) => {
     const child = { ...item };
     if (param.childsName in item && child[param.childsName] && child[param.childsName].length) {
         child[param.childsName] = _map(child[param.childsName], callback, param, child);
     }
-    return callback(child, parent);
+
+    return callback ? callback(child, parent) : child;
 });
 
 const _filter = (childs, callback, param = Tree.common, parent = 'root') => {
@@ -104,7 +105,7 @@ Tree.childs = (tree, callbackOrId, param = Tree.common) => {
     return undefined;
 };
 
-Tree.map = (tree, callback, param = Tree.common) => _map(tree, callback, param);
+Tree.map = (tree, callback = undefined, param = Tree.common) => _map(tree, callback, param);
 
 Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
     let from;
@@ -143,8 +144,6 @@ Tree.move = (tree, id, beforeID, param = Tree.common) => {
     return out;
 };
 
-Tree.clone = (tree, id, param = Tree.common) => {
-
-};
+Tree.clone = (tree, param = Tree.common) => Tree.map(tree, undefined, param);
 
 export default Tree;

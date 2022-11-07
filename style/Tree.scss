@@ -6,7 +6,7 @@
     overflow: hidden;
     .tree-item{
         cursor: pointer;
-        border-bottom: 1px solid blue;
+        border-bottom: 1px solid gray;
 
         min-height: 32px;
         line-height: 32px;
@@ -18,7 +18,7 @@
         align-content: stretch;
         align-items: stretch;
         &:hover{
-            background-color: rgb(235, 235, 235);
+            background-color: rgb(61, 61, 61);
         }
         .tree-level{
             min-width: 32px;
@@ -34,8 +34,9 @@
        
 
     }
-}
-.tree-item-select{
-    background-color: blue !important;
-    color:white !important;
+    
+    .tree-item-select{
+        background-color: #1A73E8 !important;
+        color:white !important;
+    }
 }
