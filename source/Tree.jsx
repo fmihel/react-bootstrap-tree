@@ -60,68 +60,11 @@ Tree.common = {
     collapsing: true,
 
 };
-/*
-const _each = (tree, callbackOrId, param = Tree.common, parent = 'root') => {
-    for (let i = 0; i < tree.length; i++) {
-        const item = tree[i];
-        if (typeof callbackOrId === 'function') {
-            if (callbackOrId(item, parent) === true) {
-                return item;
-            }
-        } else if (item[param.idName] == callbackOrId) {
-            return item;
-        }
-        if (param.childsName in item) {
-            const child = _each(item[param.childsName], callbackOrId, param, item);
-            if (child) {
-                return child;
-            }
-        }
-    }
-    return undefined;
-};
-
-const _map = (childs, callback = undefined, param = Tree.common, parent = 'root') => childs.map((item, i) => {
-    const child = { ...item };
-    if (param.childsName in item && child[param.childsName] && child[param.childsName].length) {
-        child[param.childsName] = _map(child[param.childsName], callback, param, child);
-    }
-
-    return callback ? callback(child, parent) : child;
-});
-
-const _filter = (childs, callback, param = Tree.common, parent = 'root') => {
-    const out = [];
-    for (let i = 0; i < childs.length; i++) {
-        const child = { ...childs[i] };
-        if (callback(child, parent) === true) {
-            if (param.childsName in child && child[param.childsName] && child[param.childsName].length) {
-                child[param.childsName] = _filter(child[param.childsName], callback, param, child);
-            }
-            out.push(child);
-        }
-    }
-
-    return out;
-};
-*/
 Tree.each = (tree, callbackOrId, param = Tree.common) => TreeUtils.each(tree, callbackOrId, param.idName, param.childsName);
-
 Tree.parent = (tree, callbackOrId, param = Tree.common) => TreeUtils.parent(tree, callbackOrId, param.idName, param.childsName);
-Tree.parents = (tree, callbackOrId, param = Tree.common) => {
-    const out = [];
-    let parent = TreeUtils.parent(tree, callbackOrId, param.idName, param.childsName);
-    while (parent && parent !== 'root') {
-        out.push(parent);
-        parent = TreeUtils.parent(tree, parent[param.idName], param.idName, param.childsName);
-    }
-    return out;
-};
-
+Tree.parents = (tree, callbackOrId, param = Tree.common) => TreeUtils.parents(tree, callbackOrId, param.idName, param.childsName);
 Tree.childs = (tree, callbackOrId, param = Tree.common) => TreeUtils.childs(tree, callbackOrId, param.idName, param.childsName);
-
 Tree.map = (tree, callback = undefined, param = Tree.common) => TreeUtils.map(tree, callback, param.childsName);
-
 Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
     let from;
     let to;

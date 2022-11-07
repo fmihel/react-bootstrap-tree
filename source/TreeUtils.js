@@ -60,6 +60,16 @@ export default class TreeUtils {
         return out;
     }
 
+    static parents(tree, callbackOrId, idName, childsName) {
+        const out = [];
+        let parent = TreeUtils.parent(tree, callbackOrId, idName, childsName);
+        while (parent && parent !== 'root') {
+            out.push(parent);
+            parent = TreeUtils.parent(tree, parent[idName], idName, childsName);
+        }
+        return out;
+    }
+
     static childs(tree, callbackOrId, idName, childsName) {
         const parent = TreeUtils.parent(tree, callbackOrId, idName, childsName);
         if (parent === 'root') {
