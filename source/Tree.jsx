@@ -5,14 +5,19 @@ import TreeNodes from './TreeNodes.jsx';
 
 function Tree({
     data = [],
+    setup = {},
     idName = Tree.common.idName,
     captionName = Tree.common.captionName,
     childsName = Tree.common.childsName,
     IconComponent = Tree.common.IconComponent,
     icons = Tree.common.icons,
-    setup = {},
     onClick = undefined,
-    onGetIcon = undefined,
+    onDoubleClick = undefined,
+    onSelect = undefined,
+    onChange = undefined,
+    onGetIcon = Tree.common.onGetIcon,
+    expandOnDoubleClickCaption = Tree.common.expandOnDoubleClickCaption,
+    expandOnDoubleClickIcon = Tree.common.expandOnDoubleClickIcon,
 }) {
     return (
         <div className="tree">
@@ -23,10 +28,14 @@ function Tree({
                 childsName={childsName}
                 setup={setup}
                 onClick={onClick}
+                onDoubleClick={onDoubleClick}
+                onSelect={onSelect}
+                onChange={onChange}
                 IconComponent={IconComponent}
                 icons={icons}
                 onGetIcon={onGetIcon}
-
+                expandOnDoubleClickCaption={expandOnDoubleClickCaption}
+                expandOnDoubleClickIcon={expandOnDoubleClickIcon}
             />
         </div>
     );
@@ -38,10 +47,14 @@ Tree.common = {
     childsName: 'childs',
     IconComponent: undefined,
     icons: {
-        expand: '',
-        collapse: '',
-        file: '',
+        expand: undefined,
+        collapse: undefined,
+        file: undefined,
     },
+    onGetIcon: undefined,
+    expandOnDoubleClickCaption: true,
+    expandOnDoubleClickIcon: false,
+
 };
 
 const _each = (tree, callbackOrId, param = Tree.common, parent = 'root') => {

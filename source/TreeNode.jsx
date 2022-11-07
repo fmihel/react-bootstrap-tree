@@ -15,22 +15,45 @@ export default function ({
     level = 0,
     caption = '',
     onClick = undefined,
+    onDoubleClick = undefined,
     select = false,
     IconComponent = undefined,
     icon = undefined,
+
 }) {
-    const click = () => {
-        onClick({ item });
+    const click = (e) => {
+        if (onClick) onClick({ item, isIcon: false });
+    };
+    const dblClick = (e) => {
+        if (onDoubleClick) onDoubleClick({ item, isIcon: false });
+    };
+    const clickIcon = (e) => {
+        if (onClick) onClick({ item, isIcon: true });
+    };
+    const dblClickIcon = (e) => {
+        if (onDoubleClick) onDoubleClick({ item, isIcon: true });
     };
     const cLevel = IconComponent ? level - 1 : level;
     return (
         <div
             className={`tree-item${select ? ' tree-item-select' : ''}`}
-            onClick={click}
         >
             {map(cLevel, (i) => <div key={i} className="tree-level" />)}
-            {IconComponent && <div className="tree-icon">{icon && <IconComponent icon={icon} />}</div>}
-            <div className="tree-caption">
+            {IconComponent && (
+                <div
+                    className="tree-icon"
+                    onClick={clickIcon}
+                    onDoubleClick={dblClickIcon}
+                >
+                    {icon && <IconComponent icon={icon} />}
+                </div>
+            )}
+            <div
+                className="tree-caption"
+                onClick={click}
+                onDoubleClick={dblClick}
+
+            >
                 {caption}
             </div>
         </div>

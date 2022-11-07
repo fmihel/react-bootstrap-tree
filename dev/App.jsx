@@ -51,7 +51,8 @@ function treeGenerate(param = {}) {
 class App extends React.Component {
     constructor(p) {
         super(p);
-        this.onTreeClick = this.onTreeClick.bind(this);
+        this.onTreeSelect = this.onTreeSelect.bind(this);
+        this.onTreeChange = this.onTreeChange.bind(this);
         this.onUp = this.onUp.bind(this);
         this.onDown = this.onDown.bind(this);
         this.onDelete = this.onDelete.bind(this);
@@ -68,18 +69,13 @@ class App extends React.Component {
         this.selectForMove = false;
     }
 
-    onTreeClick(o) {
+    onTreeSelect(o) {
         console.log(o);
         this.current = o.id;
-        this.setState({ setup: o.setup });
     }
 
-    onTreeInit({ sender }) {
-        this.tree = sender;
-    }
-
-    onSelect() {
-        this.tree.select('sub22');
+    onTreeChange({ setup }) {
+        this.setState({ setup });
     }
 
     onUp() {
@@ -171,8 +167,8 @@ class App extends React.Component {
                     <Tree
                         data={data}
                         setup={setup}
-                        onClick={this.onTreeClick}
-                        onInit={this.onTreeInit}
+                        onSelect={this.onTreeSelect}
+                        onChange={this.onTreeChange}
                         animate={0}
                         onGetIcon={({ item, expand }) => {
                             if (item.id == 40) return faAddressBook;

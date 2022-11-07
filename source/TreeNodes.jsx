@@ -8,32 +8,55 @@ export default class TreeNodes extends React.Component {
     constructor(p) {
         super(p);
         this.onClick = this.onClick.bind(this);
+        this.onDoubleClick = this.onDoubleClick.bind(this);
+
+        this.action = this.action.bind(this);
         this.state = {
             animateExpand: false,
             animateCollapse: false,
         };
     }
 
-    onClick({ item }) {
+    action(item, param = {}) {
+        const prm = {
+            select: false,
+            expand: false,
+            expandType: 'toggle', // toggle true false
+            ...param,
+        };
         const {
-            onClick, idName, setup, animate,
+            idName, animate, onSelect, onChange, setup,
         } = this.props;
-        if (onClick) {
-            const newSetup = { ...setup };
-            const itemProp = item[idName];
+
+        const itemProp = item[idName];
+        const newSetup = { ...setup };
+        let modif = false;
+        // ---------------------------------------------------------------------
+        if (prm.select) {
+            if (!(itemProp in setup) || (!setup[itemProp].select)) {
+                Object.keys(newSetup).map((key) => {
+                    if ('select' in newSetup[key]) {
+                        delete newSetup[key].select;
+                    }
+                });
+
+                if (!(itemProp in newSetup)) {
+                    newSetup[itemProp] = {};
+                }
+
+                newSetup[itemProp].select = true;
+                if (onSelect) onSelect({ [idName]: itemProp, item });
+                modif = true;
+            }
+        }
+        // ---------------------------------------------------------------------
+        if (prm.expand) {
             if (!(itemProp in newSetup)) {
                 newSetup[itemProp] = { expand: false };
             }
 
-            newSetup[itemProp].expand = !newSetup[itemProp].expand;
+            newSetup[itemProp].expand = (prm.expandType === 'toggle' ? (!newSetup[itemProp].expand) : prm.expand);
 
-            Object.keys(newSetup).map((key) => {
-                if ('select' in newSetup[key]) {
-                    delete newSetup[key].select;
-                }
-            });
-
-            newSetup[itemProp].select = true;
             if (animate > 0) {
                 if (newSetup[itemProp].expand) {
                     this.setState({ animateExpand: itemProp });
@@ -41,8 +64,36 @@ export default class TreeNodes extends React.Component {
                     this.setState({ animateCollapse: itemProp });
                 }
             }
+            modif = true;
+        }
+        // ---------------------------------------------------------------------
+        if (modif && onChange) {
+            onChange({ setup: newSetup });
+        }
+    }
 
-            onClick({ [idName]: item[idName], item, setup: newSetup });
+    onClick({ item, isIcon }) {
+        const {
+            onClick, expandOnDoubleClickCaption, expandOnDoubleClickIcon, setup, onChange,
+        } = this.props;
+
+        if (onClick) onClick({ item });
+
+        if ((isIcon && !expandOnDoubleClickIcon) || (!isIcon && !expandOnDoubleClickCaption)) {
+            this.action(item, { select: true, expand: true });
+        } else {
+            this.action(item, { select: true, expand: false });
+        }
+    }
+
+    onDoubleClick({ item, isIcon }) {
+        const {
+            onDoubleClick, expandOnDoubleClickCaption, expandOnDoubleClickIcon, setup, onChange,
+        } = this.props;
+        if (onDoubleClick) onDoubleClick({ item });
+
+        if ((isIcon && expandOnDoubleClickIcon) || (!isIcon && expandOnDoubleClickCaption)) {
+            this.action(item, { select: true, expand: true });
         }
     }
 
@@ -115,6 +166,7 @@ export default class TreeNodes extends React.Component {
                             caption={item[captionName]}
                             level={level}
                             onClick={this.onClick}
+                            onDoubleClick={this.onDoubleClick}
                             item={item}
                             select={select(item)}
                             IconComponent={IconComponent}
@@ -144,9 +196,13 @@ TreeNodes.defaultProps = {
     childsName: 'childs',
     setup: {},
     onClick: undefined,
-    onInit: undefined,
+    onDoubleClick: undefined,
+    onSelect: undefined,
+    onChange: undefined,
     level: 1,
     animate: 200,
     IconComponent: undefined,
     icons: {},
+    expandOnDoubleClickCaption: false,
+    expandOnDoubleClickIcon: false,
 };
