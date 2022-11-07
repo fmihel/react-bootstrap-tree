@@ -17,6 +17,10 @@ export default class TreeNodes extends React.Component {
         };
     }
 
+    collapsing(item, setup, data) {
+
+    }
+
     action(item, param = {}) {
         const prm = {
             select: false,
@@ -25,7 +29,7 @@ export default class TreeNodes extends React.Component {
             ...param,
         };
         const {
-            idName, animate, onSelect, onChange, setup,
+            idName, animate, onSelect, onChange, setup, collapsing, data,
         } = this.props;
 
         const itemProp = item[idName];
@@ -56,6 +60,9 @@ export default class TreeNodes extends React.Component {
             }
 
             newSetup[itemProp].expand = (prm.expandType === 'toggle' ? (!newSetup[itemProp].expand) : prm.expand);
+            if (collapsing) {
+                this.collapsing(item, newSetup, data);
+            }
 
             if (animate > 0) {
                 if (newSetup[itemProp].expand) {
@@ -205,4 +212,5 @@ TreeNodes.defaultProps = {
     icons: {},
     expandOnDoubleClickCaption: false,
     expandOnDoubleClickIcon: false,
+    collapsing: true,
 };

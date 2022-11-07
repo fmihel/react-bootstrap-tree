@@ -18,6 +18,7 @@ function Tree({
     onGetIcon = Tree.common.onGetIcon,
     expandOnDoubleClickCaption = Tree.common.expandOnDoubleClickCaption,
     expandOnDoubleClickIcon = Tree.common.expandOnDoubleClickIcon,
+    collapsing = Tree.common.collapsing,
 }) {
     return (
         <div className="tree">
@@ -36,6 +37,7 @@ function Tree({
                 onGetIcon={onGetIcon}
                 expandOnDoubleClickCaption={expandOnDoubleClickCaption}
                 expandOnDoubleClickIcon={expandOnDoubleClickIcon}
+                collapsing={collapsing}
             />
         </div>
     );
@@ -54,6 +56,7 @@ Tree.common = {
     onGetIcon: undefined,
     expandOnDoubleClickCaption: true,
     expandOnDoubleClickIcon: false,
+    collapsing: true,
 
 };
 
