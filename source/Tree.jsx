@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import TreeNodes from './TreeNodes.jsx';
+import TreeUtils from './TreeUtils.js';
 
 function Tree({
     data = [],
@@ -59,7 +60,7 @@ Tree.common = {
     collapsing: true,
 
 };
-
+/*
 const _each = (tree, callbackOrId, param = Tree.common, parent = 'root') => {
     for (let i = 0; i < tree.length; i++) {
         const item = tree[i];
@@ -103,51 +104,29 @@ const _filter = (childs, callback, param = Tree.common, parent = 'root') => {
 
     return out;
 };
+*/
+Tree.each = (tree, callbackOrId, param = Tree.common) => TreeUtils.each(tree, callbackOrId, param.idName, param.childsName);
 
-Tree.each = (tree, callbackOrId, param = Tree.common) => _each(tree, callbackOrId, param);
-
-Tree.parent = (tree, callbackOrId, param = Tree.common) => {
-    let out;
-    _each(tree, (item, parent) => {
-        if (typeof callbackOrId === 'function') {
-            if (callbackOrId(item, parent) === true) {
-                out = parent;
-                return true;
-            }
-        } else if (item[param.idName] == callbackOrId) {
-            out = parent;
-            return true;
-        }
-    }, param);
-    return out;
-};
+Tree.parent = (tree, callbackOrId, param = Tree.common) => TreeUtils.parent(tree, callbackOrId, param.idName, param.childsName);
 Tree.parents = (tree, callbackOrId, param = Tree.common) => {
     const out = [];
-    let parent = Tree.parent(tree, callbackOrId, param);
+    let parent = TreeUtils.parent(tree, callbackOrId, param.idName, param.childsName);
     while (parent && parent !== 'root') {
         out.push(parent);
-        parent = Tree.parent(tree, parent[param.idName], param);
+        parent = TreeUtils.parent(tree, parent[param.idName], param.idName, param.childsName);
     }
     return out;
 };
-Tree.childs = (tree, callbackOrId, param = Tree.common) => {
-    const parent = Tree.parent(tree, callbackOrId, param);
-    if (parent === 'root') {
-        return tree;
-    }
-    if (parent) {
-        return parent[param.childsName];
-    }
-    return undefined;
-};
 
-Tree.map = (tree, callback = undefined, param = Tree.common) => _map(tree, callback, param);
+Tree.childs = (tree, callbackOrId, param = Tree.common) => TreeUtils.childs(tree, callbackOrId, param.idName, param.childsName);
+
+Tree.map = (tree, callback = undefined, param = Tree.common) => TreeUtils.map(tree, callback, param.childsName);
 
 Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
     let from;
     let to;
 
-    _each(tree, ((item) => {
+    Tree.each(tree, ((item) => {
         if (item[param.idName] == fromID) {
             from = item;
         }
@@ -158,7 +137,7 @@ Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
         return false;
     }), param);
 
-    const out = _map(tree, (item) => {
+    const out = Tree.map(tree, (item) => {
         if (item[param.idName] == fromID) return to;
         if (item[param.idName] == toID) return from;
         return item;
@@ -166,11 +145,11 @@ Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
     return out;
 };
 
-Tree.filter = (tree, callback, param = Tree.common) => _filter(tree, callback, param);
+Tree.filter = (tree, callback, param = Tree.common) => TreeUtils.filter(tree, callback, param.childsName);
 
 Tree.move = (tree, id, beforeID, param = Tree.common) => {
-    const item = { ..._each(tree, id, param) };
-    const out = _filter(tree, (it) => (it[param.idName] != item[param.idName]), param);
+    const item = { ...Tree.each(tree, id, param) };
+    const out = Tree.filter(tree, (it) => (it[param.idName] != item[param.idName]), param);
     const parent = Tree.parent(out, beforeID, param);
     if (parent) {
         if (parent === 'root') {
