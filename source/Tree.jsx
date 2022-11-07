@@ -133,15 +133,21 @@ Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
 Tree.filter = (tree, callback, param = Tree.common) => _filter(tree, callback, param);
 
 Tree.move = (tree, id, beforeID, param = Tree.common) => {
-    const item = _each(tree, id, param);
+    const item = { ..._each(tree, id, param) };
     const out = _filter(tree, (it) => (it[param.idName] != item[param.idName]), param);
     const parent = Tree.parent(out, beforeID, param);
-    if (parent === 'root') {
-        out.push(item);
-    } else {
-        parent[param.childsName].push(item);
+    if (parent) {
+        if (parent === 'root') {
+            const index = out.findIndex((it) => it[param.idName] == beforeID);
+            return [...out.slice(0, index), item, ...out.slice(index)];
+        }
+
+        const index = parent[param.childsName].findIndex((it) => it[param.idName] == beforeID);
+        parent[param.childsName] = [...parent[param.childsName].slice(0, index), item, ...parent[param.childsName].slice(index)];
+
+        return out;
     }
-    return out;
+    return false;
 };
 
 Tree.clone = (tree, param = Tree.common) => Tree.map(tree, undefined, param);

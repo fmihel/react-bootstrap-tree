@@ -46,13 +46,16 @@ class App extends React.Component {
         this.onDown = this.onDown.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onInsert = this.onInsert.bind(this);
+        this.onMove = this.onMove.bind(this);
+        this.onSelectForMove = this.onSelectForMove.bind(this);
         this.tree = undefined;
         this.state = {
             setup: {
             },
-            data: treeGenerate({ count: 3, deep: 2 }),
+            data: treeGenerate({ count: 5, deep: 2 }),
         };
         this.current = false;
+        this.selectForMove = false;
     }
 
     onTreeClick(o) {
@@ -130,6 +133,15 @@ class App extends React.Component {
         this.setState({ data });
     }
 
+    onMove() {
+        const data = Tree.move(this.state.data, this.selectForMove, this.current);
+        if (data) this.setState({ data });
+    }
+
+    onSelectForMove() {
+        this.selectForMove = this.current;
+    }
+
     componentDidMount() {
     }
 
@@ -151,6 +163,8 @@ class App extends React.Component {
                     <button type="button" onClick={this.onDown}>down</button>
                     <button type="button" onClick={this.onInsert}>insert</button>
                     <button type="button" onClick={this.onDelete}>delete</button>
+                    <button type="button" onClick={this.onMove}>move</button>
+                    <button type="button" onClick={this.onSelectForMove}>select for move</button>
                 </div>
                 <div style={{ height: 500, overflow: 'auto', border: '1px solid gray' }}>
                     <Tree
