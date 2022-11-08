@@ -20,11 +20,13 @@ function Tree({
     expandOnDoubleClickCaption = Tree.common.expandOnDoubleClickCaption,
     expandOnDoubleClickIcon = Tree.common.expandOnDoubleClickIcon,
     collapsing = Tree.common.collapsing,
+    animate = Tree.common.animate,
 }) {
     return (
         <div className="tree">
             <TreeNodes
                 data={data}
+                all={data}
                 idName={idName}
                 captionName={captionName}
                 childsName={childsName}
@@ -39,6 +41,7 @@ function Tree({
                 expandOnDoubleClickCaption={expandOnDoubleClickCaption}
                 expandOnDoubleClickIcon={expandOnDoubleClickIcon}
                 collapsing={collapsing}
+                animate={animate}
             />
         </div>
     );
@@ -58,6 +61,7 @@ Tree.common = {
     expandOnDoubleClickCaption: true,
     expandOnDoubleClickIcon: false,
     collapsing: true,
+    animate: 50,
 
 };
 Tree.each = (tree, callbackOrId, param = Tree.common) => TreeUtils.each(tree, callbackOrId, param.idName, param.childsName);
@@ -65,6 +69,8 @@ Tree.parent = (tree, callbackOrId, param = Tree.common) => TreeUtils.parent(tree
 Tree.parents = (tree, callbackOrId, param = Tree.common) => TreeUtils.parents(tree, callbackOrId, param.idName, param.childsName);
 Tree.childs = (tree, callbackOrId, param = Tree.common) => TreeUtils.childs(tree, callbackOrId, param.idName, param.childsName);
 Tree.map = (tree, callback = undefined, param = Tree.common) => TreeUtils.map(tree, callback, param.childsName);
+Tree.filter = (tree, callback, param = Tree.common) => TreeUtils.filter(tree, callback, param.childsName);
+
 Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
     let from;
     let to;
@@ -87,8 +93,6 @@ Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
     }, param);
     return out;
 };
-
-Tree.filter = (tree, callback, param = Tree.common) => TreeUtils.filter(tree, callback, param.childsName);
 
 Tree.move = (tree, id, beforeID, param = Tree.common) => {
     const item = { ...Tree.each(tree, id, param) };

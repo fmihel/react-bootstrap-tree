@@ -63,14 +63,14 @@ class App extends React.Component {
         this.state = {
             setup: {
             },
-            data: treeGenerate({ count: 7, deep: 2 }),
+            data: treeGenerate({ count: 7, deep: 3 }),
         };
         this.current = false;
         this.selectForMove = false;
     }
 
     onTreeSelect(o) {
-        console.log(o);
+        console.log('select', o);
         this.current = o.id;
     }
 
@@ -169,7 +169,6 @@ class App extends React.Component {
                         setup={setup}
                         onSelect={this.onTreeSelect}
                         onChange={this.onTreeChange}
-                        animate={0}
                         onGetIcon={({ item, expand }) => {
                             if (item.id == 40) return faAddressBook;
                             if (item.id == 8) return false;

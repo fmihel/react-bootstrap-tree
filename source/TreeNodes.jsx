@@ -3,22 +3,41 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import TreeNode from './TreeNode.jsx';
+import TreeUtils from './TreeUtils.js';
 
 export default class TreeNodes extends React.Component {
     constructor(p) {
         super(p);
         this.onClick = this.onClick.bind(this);
         this.onDoubleClick = this.onDoubleClick.bind(this);
-
+        this.collapsing = this.collapsing.bind(this);
         this.action = this.action.bind(this);
+        this.animate = this.animate.bind(this);
         this.state = {
             animateExpand: false,
-            animateCollapse: false,
         };
     }
 
-    collapsing(item, setup, data) {
+    collapsing(item, setup) {
+        const { idName, childsName, all } = this.props;
+        const parents = TreeUtils.parents(all, item[idName], idName, childsName);
 
+        // сворачиваем все
+        const keys = Object.keys(setup);
+        for (let i = 0; i < keys.length; i++) {
+            // eslint-disable-next-line no-param-reassign
+            if (item[idName] != `${keys[i]}`) setup[`${keys[i]}`].expand = false;
+        }
+
+        // разворачиваем всю родительскую цепочку
+        parents.map((parent) => {
+            const prop = parent[idName];
+            // eslint-disable-next-line no-param-reassign
+            setup[`${prop}`] = { ...setup[`${prop}`], expand: true };
+        });
+
+        // eslint-disable-next-line no-param-reassign
+        // setup[`${item[idName]}`] = { ...setup[`${item[idName]}`], expand: true };
     }
 
     action(item, param = {}) {
@@ -29,18 +48,18 @@ export default class TreeNodes extends React.Component {
             ...param,
         };
         const {
-            idName, animate, onSelect, onChange, setup, collapsing, data,
+            idName, animate, onSelect, onChange, setup, collapsing,
         } = this.props;
 
-        const itemProp = item[idName];
+        const itemProp = `${item[idName]}`;
         const newSetup = { ...setup };
         let modif = false;
         // ---------------------------------------------------------------------
         if (prm.select) {
             if (!(itemProp in setup) || (!setup[itemProp].select)) {
                 Object.keys(newSetup).map((key) => {
-                    if ('select' in newSetup[key]) {
-                        delete newSetup[key].select;
+                    if ('select' in newSetup[`${key}`]) {
+                        delete newSetup[`${key}`].select;
                     }
                 });
 
@@ -49,7 +68,7 @@ export default class TreeNodes extends React.Component {
                 }
 
                 newSetup[itemProp].select = true;
-                if (onSelect) onSelect({ [idName]: itemProp, item });
+                if (onSelect) onSelect({ [`${idName}`]: itemProp, item });
                 modif = true;
             }
         }
@@ -58,23 +77,31 @@ export default class TreeNodes extends React.Component {
             if (!(itemProp in newSetup)) {
                 newSetup[itemProp] = { expand: false };
             }
-
-            newSetup[itemProp].expand = (prm.expandType === 'toggle' ? (!newSetup[itemProp].expand) : prm.expand);
-            if (collapsing) {
-                this.collapsing(item, newSetup, data);
-            }
-
-            if (animate > 0) {
-                if (newSetup[itemProp].expand) {
-                    this.setState({ animateExpand: itemProp });
-                } else {
-                    this.setState({ animateCollapse: itemProp });
+            // ---------------------------------------------------------------------
+            if ((prm.expandType === 'toggle' ? (!newSetup[itemProp].expand) : prm.expand)) {
+                newSetup[itemProp].expand = true;
+                if (collapsing) {
+                    // свернем все ненужные узлы
+                    this.collapsing(item, newSetup);
                 }
+                if (animate > 0) {
+                    this.setState({ animateExpand: itemProp });
+                }
+                if (onChange) {
+                    onChange({ setup: newSetup });
+                }
+            } else {
+                // newSetup[itemProp].expand = false;
+                this.animate(itemProp, 'collapse')
+                    .then(() => {
+                        newSetup[itemProp].expand = false;
+                        if (onChange) {
+                            onChange({ setup: newSetup });
+                        }
+                    });
             }
-            modif = true;
-        }
         // ---------------------------------------------------------------------
-        if (modif && onChange) {
+        } else if (modif && onChange) {
             onChange({ setup: newSetup });
         }
     }
@@ -104,6 +131,30 @@ export default class TreeNodes extends React.Component {
         }
     }
 
+    animate(id, action = 'expand') {
+        const { animate } = this.props;
+        return new Promise((ok, err) => {
+            if (animate > 0) {
+                if (action === 'expand') {
+                    $('.tree').find(`#${id}`).find('.tree-childs')
+                        .slideUp(0)
+                        .slideDown(animate, () => {
+                            // this.setState({ animateExpand: false });
+                            ok({ id, action });
+                        });
+                } else { // action==='collapse'
+                    $('.tree').find(`#${id}`).find('.tree-childs')
+                        .slideUp(animate, () => {
+                            // this.setState({ animateCollapse: false });
+                            ok({ id, action });
+                        });
+                }
+            } else {
+                ok({ id, action });
+            }
+        });
+    }
+
     componentDidMount() {
         // разовый вызов после первого рендеринга
     }
@@ -114,20 +165,11 @@ export default class TreeNodes extends React.Component {
 
     componentDidUpdate(prevProps, prevState, prevContext) {
         // каждый раз после рендеринга (кроме первого раза !)
-        const { animateExpand, animateCollapse } = this.state;
-        const { animate } = this.props;
-        if (prevState.animateExpand !== animateExpand && animateExpand !== 'false') {
-            $('.tree').find(`#${animateExpand}`).find('.tree-childs')
-                .slideUp(0)
-                .slideDown(animate, () => {
-                    this.setState({ animateExpand: false });
-                });
-        }
-        if (prevState.animateCollapse !== animateCollapse && animateCollapse !== 'false') {
-            $('.tree').find(`#${animateCollapse}`).find('.tree-childs')
-                .slideUp(animate, () => {
-                    this.setState({ animateCollapse: false });
-                });
+        const { animateExpand } = this.state;
+        if (prevState.animateExpand !== animateExpand && animateExpand !== false) {
+            this.animate(animateExpand, 'expand').then(() => {
+                this.setState({ animateExpand: false });
+            });
         }
     }
 
@@ -198,6 +240,7 @@ export default class TreeNodes extends React.Component {
 }
 TreeNodes.defaultProps = {
     data: [],
+    all: [],
     idName: 'id',
     captionName: 'caption',
     childsName: 'childs',
