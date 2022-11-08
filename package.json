@@ -1,6 +1,6 @@
 {
   "name": "fmihel-react-bootstrap-tree",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "bootstrap react component for view tree",
   "main": "dist/react-bootstrap-tree.min.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "npm-publish-patch": "npm run build && npm version patch && npm publish && npm run git-push",
     "npm-publish-minor": "npm run build && npm version minor && npm publish && npm run git-push",
     "npm-publish-major": "npm run build && npm version major && npm publish && npm run git-push",
-    "npm-publish-beta":  "npm run build && npm publish  --tag beta"
+    "npm-publish-beta": "npm run build && npm publish  --tag beta"
   },
   "repository": {
     "type": "git",
