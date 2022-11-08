@@ -10,7 +10,8 @@
     "git-push": "git push origin master && git push origin --tags",
     "npm-publish-patch": "npm run build && npm version patch && npm publish && npm run git-push",
     "npm-publish-minor": "npm run build && npm version minor && npm publish && npm run git-push",
-    "npm-publish-major": "npm run build && npm version major && npm publish && npm run git-push"
+    "npm-publish-major": "npm run build && npm version major && npm publish && npm run git-push",
+    "npm-publish-beta":  "npm run build && npm publish  --tag beta"
   },
   "repository": {
     "type": "git",
