@@ -6,7 +6,7 @@ export default class TreeUtils {
                 if (callbackOrId(item, parent) === true) {
                     return item;
                 }
-            } else if (item[idName] == callbackOrId) {
+            } else if (TreeUtils.eq(item[idName], callbackOrId)) {
                 return item;
             }
             if (childsName in item) {
@@ -52,7 +52,7 @@ export default class TreeUtils {
                     out = parent;
                     return true;
                 }
-            } else if (item[idName] == callbackOrId) {
+            } else if (TreeUtils.eq(item[idName], callbackOrId)) {
                 out = parent;
                 return true;
             }
@@ -79,5 +79,15 @@ export default class TreeUtils {
             return parent[childsName];
         }
         return undefined;
+    }
+
+    static eq(id1, id2) {
+        const t1 = typeof id1;
+        const t2 = typeof id2;
+        if (t1 === t2) return (id1 === id2);
+        if (t1 === 'boolean' || t2 === 'boolean') return false;
+        if (t1 === 'undefined' || t2 === 'undefined') return false;
+
+        return `${id1}` === `${id2}`;
     }
 }

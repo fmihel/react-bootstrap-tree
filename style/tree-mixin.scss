@@ -1,0 +1,56 @@
+@mixin tree-mixin($size,$row-border,$hover-bg,$select-bg,$select-color){
+    
+    box-sizing: border-box;
+    overflow: hidden;
+    
+    .tree-item{
+
+        -webkit-touch-callout: none;    /* iOS Safari */
+        -webkit-user-select: none;      /* Safari */
+        -khtml-user-select: none;       /* Konqueror HTML */
+        -moz-user-select: none;         /* Old versions of Firefox */
+        -ms-user-select: none;          /* Internet Explorer/Edge */
+        user-select: none;              /* Non-prefixed version, currently*/
+
+
+        cursor: pointer;
+        border-bottom: 1px solid $row-border;
+
+        min-height: $size;
+        line-height: $size;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: stretch;
+
+        &:hover{
+            background-color: $hover-bg;
+        }
+
+        .tree-level{
+            min-width: $size;
+            width: $size;
+        }
+
+        .tree-caption{
+            flex: 1 1 auto;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .tree-icon{
+            max-width: $size !important;
+            width: $size !important;
+            height: 100% !important;
+            text-align: center;
+        }
+    }
+    
+    .tree-item-select{
+        background-color: $select-bg !important;
+        color:$select-color !important;
+    }
+}

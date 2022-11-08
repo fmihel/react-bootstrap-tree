@@ -7,7 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './App.scss';
-import '../style/Tree.scss';
+import '../style/tree.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faFile, faFolder, faFolderOpen, faAddressBook,
@@ -82,11 +82,10 @@ class App extends React.Component {
         const { data } = this.state;
         const { current } = this;
         const childs = Tree.childs(data, current);
-
         if (childs) {
             let up;
             childs.map((it, i) => {
-                if (it.id === current) {
+                if (Tree.eq(it.id, current)) {
                     if (i > 0) up = childs[i - 1];
                 }
             });
@@ -107,7 +106,7 @@ class App extends React.Component {
         if (childs) {
             let down;
             childs.map((it, i) => {
-                if (it.id === current) {
+                if (Tree.eq(it.id, current)) {
                     if (i < childs.length - 1) down = childs[i + 1];
                 }
             });
@@ -122,7 +121,7 @@ class App extends React.Component {
 
     onDelete() {
         this.setState((prev) => ({
-            data: Tree.filter(prev.data, (item) => item.id !== this.current),
+            data: Tree.filter(prev.data, (item) => !Tree.eq(item.id, this.current)),
         }));
     }
 
