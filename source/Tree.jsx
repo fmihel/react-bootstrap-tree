@@ -70,6 +70,9 @@ Tree.parents = (tree, callbackOrId, param = Tree.common) => TreeUtils.parents(tr
 Tree.childs = (tree, callbackOrId, param = Tree.common) => TreeUtils.childs(tree, callbackOrId, param.idName, param.childsName);
 Tree.map = (tree, callback = undefined, param = Tree.common) => TreeUtils.map(tree, callback, param.childsName);
 Tree.filter = (tree, callback, param = Tree.common) => TreeUtils.filter(tree, callback, param.childsName);
+Tree.eq = (id1, id2) => TreeUtils.eq(id1, id2);
+Tree.clone = (tree, param = Tree.common) => Tree.map(tree, undefined, param);
+Tree.expandTo = (tree, setup, toId, param = Tree.common) => TreeUtils.expandTo(tree, setup, toId, param.idName, param.childsName);
 Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
     let from;
     let to;
@@ -109,9 +112,5 @@ Tree.move = (tree, id, beforeID, param = Tree.common) => {
     }
     return false;
 };
-
-Tree.eq = (id1, id2) => TreeUtils.eq(id1, id2);
-
-Tree.clone = (tree, param = Tree.common) => Tree.map(tree, undefined, param);
 
 export default Tree;

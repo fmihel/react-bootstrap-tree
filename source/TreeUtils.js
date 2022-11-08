@@ -90,4 +90,24 @@ export default class TreeUtils {
 
         return `${id1}` === `${id2}`;
     }
+
+    static expandTo(tree, setup, toId, idName, childsName) {
+        const parents = TreeUtils.parents(tree, toId, idName, childsName);
+        const newSetup = setup.map((it) => ({ ...it, select: false }));
+
+        parents.map((parent) => {
+            const prop = `${parent[idName]}`;
+            if (!(prop in newSetup)) {
+                newSetup[prop] = { expand: true };
+            } else {
+                newSetup[prop] = { ...newSetup[prop], expand: true };
+            }
+        });
+        if (!(`${toId}` in newSetup)) {
+            newSetup[`${toId}`] = { select: true };
+        } else {
+            newSetup[`${toId}`] = { ...newSetup[`${toId}`], select: true };
+        }
+        return newSetup;
+    }
 }
