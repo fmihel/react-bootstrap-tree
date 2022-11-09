@@ -4,6 +4,7 @@ import { ut } from 'fmihel-browser-lib';
 import React from 'react';
 import TreeNodes from './TreeNodes.jsx';
 import TreeUtils from './TreeUtils.js';
+import SetupUtils from './SetupUtils.js';
 
 function Tree({
     data = [],
@@ -89,7 +90,6 @@ Tree.map = (tree, callback = undefined, param = Tree.global) => TreeUtils.map(tr
 Tree.filter = (tree, callback, param = Tree.global) => TreeUtils.filter(tree, callback, param.childsName);
 Tree.eq = (id1, id2) => TreeUtils.eq(id1, id2);
 Tree.clone = (tree, param = Tree.global) => Tree.map(tree, undefined, param);
-Tree.expandTo = (tree, setup, toId, param = Tree.global) => TreeUtils.expandTo(tree, setup, toId, param.idName, param.childsName);
 Tree.exchange = (tree, fromID, toID, param = Tree.global) => {
     let from;
     let to;
@@ -129,14 +129,17 @@ Tree.move = (tree, id, beforeID, param = Tree.global) => {
     }
     return false;
 };
-Tree.scroll = (treeId, toId, animate = 0, off = 0, alg = 'simple') => {
+Tree.scroll = (treeId, toId, animate = 0, off = 0) => {
     TreeUtils.scroll({
         scroll: document.getElementById(treeId),
         target: document.getElementById(toId),
         animate,
         off,
-        alg,
     });
 };
+
+Tree.setupExpandTo = (tree, setup, toId, param = Tree.global) => SetupUtils.expandTo(tree, setup, toId, param.idName, param.childsName);
+Tree.setupMap = (setup, callback = undefined) => SetupUtils.map(setup, callback);
+Tree.setupEach = (setup, callback) => SetupUtils.each(setup, callback);
 
 export default Tree;

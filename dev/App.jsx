@@ -167,9 +167,9 @@ class App extends React.Component {
 
     scroll() {
         const { setup } = this.state;
-        const select = Object.keys(setup).filter((key) => setup[`${key}`].select);
-        if (select.length) {
-            Tree.scroll('mytree', select[0], 200);
+        const select = Tree.setupEach(setup, ({ item }) => item.select);
+        if (select) {
+            Tree.scroll('mytree', select, 200, 100);
         }
     }
 

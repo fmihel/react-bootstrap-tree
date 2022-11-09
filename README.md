@@ -11,11 +11,18 @@ import "fmihel-react-bootstrap-tree/style/tree.scss";
 import Tree from 'fmihel-react-bootstrap-tree';
 
 class App extends React.Component {
+    constructor(p){
+        super(p);
+        this.state={
+            setup:{}
+        };
+    }
     render() {
         return (
               <div>
                 <Tree
-                    data={this.props.data}
+                    data={this.props.tree}
+                    setup={this.state.setup}                    
                 />
             </div>
         );
@@ -51,3 +58,21 @@ App.defaultProps = {
     ]
 };
 ``` 
+
+## utils
+
+### ```Tree.map(tree:array,callback:function,param?:{idName,childsName}):array```
+Возвращает новую карту дерва, для каждого узла вызывает callback (если указан), который должен вернуть узел\
+Ex, Свернуть все/collapse all
+```js
+    let newTree = Tree.map(tree,(child,parent)=>{
+        return {...child,expand:false};
+    });
+```
+
+
+
+
+
+
+
