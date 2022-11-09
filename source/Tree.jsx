@@ -7,20 +7,20 @@ import TreeUtils from './TreeUtils.js';
 function Tree({
     data = [],
     setup = {},
-    idName = Tree.common.idName,
-    captionName = Tree.common.captionName,
-    childsName = Tree.common.childsName,
-    IconComponent = Tree.common.IconComponent,
-    icons = Tree.common.icons,
+    idName = Tree.global.idName,
+    captionName = Tree.global.captionName,
+    childsName = Tree.global.childsName,
+    IconComponent = Tree.global.IconComponent,
+    icons = Tree.global.icons,
     onClick = undefined,
     onDoubleClick = undefined,
     onSelect = undefined,
     onChange = undefined,
-    onGetIcon = Tree.common.onGetIcon,
-    expandOnDoubleClickCaption = Tree.common.expandOnDoubleClickCaption,
-    expandOnDoubleClickIcon = Tree.common.expandOnDoubleClickIcon,
-    collapsing = Tree.common.collapsing,
-    animate = Tree.common.animate,
+    onGetIcon = Tree.global.onGetIcon,
+    expandOnDoubleClickCaption = Tree.global.expandOnDoubleClickCaption,
+    expandOnDoubleClickIcon = Tree.global.expandOnDoubleClickIcon,
+    collapsing = Tree.global.collapsing,
+    animate = Tree.global.animate,
 }) {
     return (
         <div className="tree">
@@ -47,7 +47,7 @@ function Tree({
     );
 }
 
-Tree.common = {
+Tree.global = {
     idName: 'id',
     captionName: 'caption',
     childsName: 'childs',
@@ -64,16 +64,16 @@ Tree.common = {
     animate: 100,
 
 };
-Tree.each = (tree, callbackOrId, param = Tree.common) => TreeUtils.each(tree, callbackOrId, param.idName, param.childsName);
-Tree.parent = (tree, callbackOrId, param = Tree.common) => TreeUtils.parent(tree, callbackOrId, param.idName, param.childsName);
-Tree.parents = (tree, callbackOrId, param = Tree.common) => TreeUtils.parents(tree, callbackOrId, param.idName, param.childsName);
-Tree.childs = (tree, callbackOrId, param = Tree.common) => TreeUtils.childs(tree, callbackOrId, param.idName, param.childsName);
-Tree.map = (tree, callback = undefined, param = Tree.common) => TreeUtils.map(tree, callback, param.childsName);
-Tree.filter = (tree, callback, param = Tree.common) => TreeUtils.filter(tree, callback, param.childsName);
+Tree.each = (tree, callbackOrId, param = Tree.global) => TreeUtils.each(tree, callbackOrId, param.idName, param.childsName);
+Tree.parent = (tree, callbackOrId, param = Tree.global) => TreeUtils.parent(tree, callbackOrId, param.idName, param.childsName);
+Tree.parents = (tree, callbackOrId, param = Tree.global) => TreeUtils.parents(tree, callbackOrId, param.idName, param.childsName);
+Tree.childs = (tree, callbackOrId, param = Tree.global) => TreeUtils.childs(tree, callbackOrId, param.idName, param.childsName);
+Tree.map = (tree, callback = undefined, param = Tree.global) => TreeUtils.map(tree, callback, param.childsName);
+Tree.filter = (tree, callback, param = Tree.global) => TreeUtils.filter(tree, callback, param.childsName);
 Tree.eq = (id1, id2) => TreeUtils.eq(id1, id2);
-Tree.clone = (tree, param = Tree.common) => Tree.map(tree, undefined, param);
-Tree.expandTo = (tree, setup, toId, param = Tree.common) => TreeUtils.expandTo(tree, setup, toId, param.idName, param.childsName);
-Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
+Tree.clone = (tree, param = Tree.global) => Tree.map(tree, undefined, param);
+Tree.expandTo = (tree, setup, toId, param = Tree.global) => TreeUtils.expandTo(tree, setup, toId, param.idName, param.childsName);
+Tree.exchange = (tree, fromID, toID, param = Tree.global) => {
     let from;
     let to;
 
@@ -95,7 +95,7 @@ Tree.exchange = (tree, fromID, toID, param = Tree.common) => {
     }, param);
     return out;
 };
-Tree.move = (tree, id, beforeID, param = Tree.common) => {
+Tree.move = (tree, id, beforeID, param = Tree.global) => {
     const item = { ...Tree.each(tree, id, param) };
     const out = Tree.filter(tree, (it) => (!TreeUtils.eq(it[param.idName], item[param.idName])), param);
     const parent = Tree.parent(out, beforeID, param);

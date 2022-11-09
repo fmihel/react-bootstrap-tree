@@ -15,8 +15,8 @@ import {
 import { ut } from 'fmihel-browser-lib';
 import Tree from '../source/Tree.jsx';
 
-Tree.common = {
-    ...Tree.common,
+Tree.global = {
+    ...Tree.global,
     IconComponent: FontAwesomeIcon,
     icons: {
         expand: faFolderOpen,
@@ -63,7 +63,7 @@ class App extends React.Component {
         this.state = {
             setup: {
             },
-            data: treeGenerate({ count: 7, deep: 3 }),
+            data: treeGenerate({ count: 10, deep: 3 }),
         };
         this.current = false;
         this.selectForMove = false;
