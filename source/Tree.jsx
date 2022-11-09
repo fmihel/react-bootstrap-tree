@@ -1,11 +1,13 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react/prop-types */
+import { ut } from 'fmihel-browser-lib';
 import React from 'react';
 import TreeNodes from './TreeNodes.jsx';
 import TreeUtils from './TreeUtils.js';
 
 function Tree({
     data = [],
+    id = ut.random_str(5),
     setup = {},
     idName = Tree.global.idName,
     captionName = Tree.global.captionName,
@@ -21,6 +23,7 @@ function Tree({
     expandOnDoubleClickIcon = Tree.global.expandOnDoubleClickIcon,
     collapsing = Tree.global.collapsing,
     animate = Tree.global.animate,
+    className = Tree.global.className,
     classNameItem = Tree.global.classNameItem, // string or function
     styleItem = Tree.global.styleItem, // object or function
     styleIcon = Tree.global.styleIcon, // object or function
@@ -28,7 +31,7 @@ function Tree({
 
 }) {
     return (
-        <div className="tree">
+        <div className={`tree ${className}`} id={id}>
             <TreeNodes
                 data={data}
                 all={data}
@@ -51,7 +54,6 @@ function Tree({
                 styleItem={styleItem}
                 styleIcon={styleIcon}
                 styleCaption={styleCaption}
-
             />
         </div>
     );
@@ -72,7 +74,7 @@ Tree.global = {
     expandOnDoubleClickIcon: false,
     collapsing: false,
     animate: 100,
-
+    className: '',
     classNameItem: undefined, // string or function
     styleItem: undefined, // object or function
     styleIcon: undefined, // object or function
@@ -126,6 +128,15 @@ Tree.move = (tree, id, beforeID, param = Tree.global) => {
         return out;
     }
     return false;
+};
+Tree.scroll = (treeId, toId, animate = 0, off = 0, alg = 'simple') => {
+    TreeUtils.scroll({
+        scroll: document.getElementById(treeId),
+        target: document.getElementById(toId),
+        animate,
+        off,
+        alg,
+    });
 };
 
 export default Tree;

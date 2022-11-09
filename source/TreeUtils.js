@@ -1,3 +1,5 @@
+import { JX } from 'fmihel-browser-lib';
+
 export default class TreeUtils {
     static each(tree, callbackOrId, idName, childsName, parent = 'root') {
         for (let i = 0; i < tree.length; i++) {
@@ -93,7 +95,7 @@ export default class TreeUtils {
 
     static expandTo(tree, setup, toId, idName, childsName) {
         const parents = TreeUtils.parents(tree, toId, idName, childsName);
-        const newSetup = Object.keys(setup).map((key) => ({ ...setup[key], select: false }));
+        const newSetup = Object.keys(setup).map((key) => ({ ...setup[`${key}`], select: false }));
 
         parents.map((parent) => {
             const prop = `${parent[idName]}`;
@@ -109,5 +111,42 @@ export default class TreeUtils {
             newSetup[`${toId}`] = { ...newSetup[`${toId}`], select: true };
         }
         return newSetup;
+    }
+
+    /** скроллирует внешний объект o.scroll:jQuery,
+     *  до момента, пока o.target:jQuery не окажется в области видимости
+     * alg - тип алгоритма
+     * alg = "simple" - просто смещает target так что бы верхняя граница совпадала с верхней границей scroll
+     * alg = "reach"  - target по наиболее короткому расстоянию от текущего сместиться в область видимости scroll
+    */
+    static scroll({
+        scroll, // DOM
+        target, // DOM
+        animate = 0,
+        off = 0,
+        alg = 'simple',
+
+    }) {
+        const $scroll = $(scroll);
+
+        const posTar = JX.abs(target);
+        const posScr = JX.abs(scroll);
+        let delta;
+
+        if (alg === 'reach') {
+            if ((posTar.h > posScr.h) || (posTar.y < posScr.y)) {
+                delta = posTar.y - posScr.y + $scroll.scrollTop() - off;
+            } else {
+                delta = posTar.y - (posScr.y + posScr.h - posTar.h) + $scroll.scrollTop() + off;
+            }
+        } else {
+            delta = posTar.y - posScr.y + $scroll.scrollTop() - off;
+        }
+
+        if (animate > 0) {
+            $scroll.animate({ scrollTop: delta }, animate);
+        } else {
+            $scroll.scrollTop(delta);
+        }
     }
 }

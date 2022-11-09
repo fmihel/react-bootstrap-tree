@@ -71,6 +71,7 @@ class App extends React.Component {
         this.onMove = this.onMove.bind(this);
         this.onSelectForMove = this.onSelectForMove.bind(this);
         this.onExpandTo = this.onExpandTo.bind(this);
+        this.scroll = this.scroll.bind(this);
         this.tree = undefined;
         this.state = {
             setup: {
@@ -164,6 +165,14 @@ class App extends React.Component {
         this.selectForMove = this.current;
     }
 
+    scroll() {
+        const { setup } = this.state;
+        const select = Object.keys(setup).filter((key) => setup[`${key}`].select);
+        if (select.length) {
+            Tree.scroll('mytree', select[0], 200);
+        }
+    }
+
     componentDidMount() {
     }
 
@@ -179,9 +188,11 @@ class App extends React.Component {
                     <button type="button" onClick={this.onMove}>move</button>
                     <button type="button" onClick={this.onSelectForMove}>select for move</button>
                     <button type="button" onClick={this.onExpandTo}>expand to</button>
+                    <button type="button" onClick={this.scroll}>scroll to</button>
                 </div>
                 <div style={{ height: 500, overflow: 'auto', border: '1px solid gray' }}>
                     <Tree
+                        id="mytree"
                         data={data}
                         setup={setup}
                         onSelect={this.onTreeSelect}
