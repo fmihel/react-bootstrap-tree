@@ -50,7 +50,10 @@
     }
     
     .tree-item-select{
-        background-color: $select-bg !important;
-        color:$select-color !important;
+        background-color: $select-bg ;
+        color:$select-color ;
+        &:hover{
+            background-color: $select-bg ;
+        }
     }
 }

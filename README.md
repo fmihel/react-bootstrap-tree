@@ -13,19 +13,10 @@ import Tree from 'fmihel-react-bootstrap-tree';
 class App extends React.Component {
     render() {
         return (
-              <div className="container-fluid" >
-                <div className="row">
-                    <div className="col">
-                        Tree
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <Tree
-                            data={this.props.data}
-                        />
-                    </div>
-                </div>
+              <div>
+                <Tree
+                    data={this.props.data}
+                />
             </div>
         );
     }

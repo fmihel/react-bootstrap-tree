@@ -1,3 +1,6 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable array-callback-return */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unused-class-component-methods */
@@ -22,6 +25,14 @@ Tree.global = {
         expand: faFolderOpen,
         collapse: faFolder,
         file: faFile,
+    },
+    collapsing: false,
+    animate: 200,
+    styleItem({ item, setup }) {
+        return Tree.eq(item.id, 22222) ? { color: 'red' } : {};
+    },
+    styleCaption({ item, setup }) {
+        return (Tree.eq(item.id, 22222) && setup[`${item.id}`] && setup[`${item.id}`].expand) ? { color: 'lime' } : {};
     },
 };
 
@@ -59,11 +70,12 @@ class App extends React.Component {
         this.onInsert = this.onInsert.bind(this);
         this.onMove = this.onMove.bind(this);
         this.onSelectForMove = this.onSelectForMove.bind(this);
+        this.onExpandTo = this.onExpandTo.bind(this);
         this.tree = undefined;
         this.state = {
             setup: {
             },
-            data: treeGenerate({ count: 10, deep: 3 }),
+            data: treeGenerate({ count: 10, deep: 5 }),
         };
         this.current = false;
         this.selectForMove = false;
@@ -138,6 +150,11 @@ class App extends React.Component {
         this.setState({ data });
     }
 
+    onExpandTo() {
+        const id = 33334;
+        this.setState(({ data, setup }) => ({ setup: Tree.expandTo(data, setup, id) }));
+    }
+
     onMove() {
         const data = Tree.move(this.state.data, this.selectForMove, this.current);
         if (data) this.setState({ data });
@@ -161,6 +178,7 @@ class App extends React.Component {
                     <button type="button" onClick={this.onDelete}>delete</button>
                     <button type="button" onClick={this.onMove}>move</button>
                     <button type="button" onClick={this.onSelectForMove}>select for move</button>
+                    <button type="button" onClick={this.onExpandTo}>expand to</button>
                 </div>
                 <div style={{ height: 500, overflow: 'auto', border: '1px solid gray' }}>
                     <Tree

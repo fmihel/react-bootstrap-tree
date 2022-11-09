@@ -93,7 +93,7 @@ export default class TreeUtils {
 
     static expandTo(tree, setup, toId, idName, childsName) {
         const parents = TreeUtils.parents(tree, toId, idName, childsName);
-        const newSetup = setup.map((it) => ({ ...it, select: false }));
+        const newSetup = Object.keys(setup).map((key) => ({ ...setup[key], select: false }));
 
         parents.map((parent) => {
             const prop = `${parent[idName]}`;

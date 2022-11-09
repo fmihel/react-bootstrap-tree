@@ -26,7 +26,7 @@ export default class TreeNodes extends React.Component {
         const keys = Object.keys(setup);
         for (let i = 0; i < keys.length; i++) {
             // eslint-disable-next-line no-param-reassign
-            if (item[idName] != `${keys[i]}`) setup[`${keys[i]}`].expand = false;
+            if (!TreeUtils.eq(item[idName], keys[i])) setup[`${keys[i]}`].expand = false;
         }
 
         // разворачиваем всю родительскую цепочку
@@ -176,6 +176,7 @@ export default class TreeNodes extends React.Component {
     render() {
         const {
             data,
+            all,
             idName,
             captionName,
             childsName,
@@ -184,6 +185,11 @@ export default class TreeNodes extends React.Component {
             IconComponent,
             icons,
             onGetIcon,
+            classNameItem, // string or function
+            styleItem, // object or function
+            styleIcon, // object or function
+            styleCaption, // object or function
+
         } = this.props;
         const { animateExpand, animateCollapse } = this.state;
 
@@ -207,6 +213,19 @@ export default class TreeNodes extends React.Component {
             }
             return icons.file;
         };
+        const getNodeStyle = (item) => (typeof styleItem === 'function' ? styleItem({
+            item, data, setup, all,
+        }) : styleItem);
+        const getNodeIconStyle = (item) => (typeof styleIcon === 'function' ? styleIcon({
+            item, data, setup, all,
+        }) : styleIcon);
+        const getNodeCaptionStyle = (item) => (typeof styleCaption === 'function' ? styleCaption({
+            item, data, setup, all,
+        }) : styleCaption);
+        const getNodeClassName = (item) => (typeof classNameItem === 'function' ? classNameItem({
+            item, data, setup, all,
+        }) : classNameItem);
+
         return (
             <>
                 {data.map((item) => (
@@ -220,6 +239,10 @@ export default class TreeNodes extends React.Component {
                             select={select(item)}
                             IconComponent={IconComponent}
                             icon={IconComponent ? getIcon(item) : ''}
+                            className={classNameItem ? getNodeClassName(item) : ''}
+                            style={styleItem ? getNodeStyle(item) : {}}
+                            iconStyle={styleIcon ? getNodeIconStyle(item) : {}}
+                            captionStyle={styleCaption ? getNodeCaptionStyle(item) : {}}
                         />
                         {(expand(item) && (childsName in item) && item[childsName].length > 0)
                         && (
@@ -256,4 +279,10 @@ TreeNodes.defaultProps = {
     expandOnDoubleClickCaption: false,
     expandOnDoubleClickIcon: false,
     collapsing: true,
+    onGetIcon: undefined,
+    classNameItem: undefined, // string or function
+    styleItem: undefined, // object or function
+    styleIcon: undefined, // object or function
+    styleCaption: undefined, // object or function
+
 };

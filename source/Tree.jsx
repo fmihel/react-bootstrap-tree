@@ -21,6 +21,11 @@ function Tree({
     expandOnDoubleClickIcon = Tree.global.expandOnDoubleClickIcon,
     collapsing = Tree.global.collapsing,
     animate = Tree.global.animate,
+    classNameItem = Tree.global.classNameItem, // string or function
+    styleItem = Tree.global.styleItem, // object or function
+    styleIcon = Tree.global.styleIcon, // object or function
+    styleCaption = Tree.global.styleCaption, // object or function
+
 }) {
     return (
         <div className="tree">
@@ -42,6 +47,11 @@ function Tree({
                 expandOnDoubleClickIcon={expandOnDoubleClickIcon}
                 collapsing={collapsing}
                 animate={animate}
+                classNameItem={classNameItem}
+                styleItem={styleItem}
+                styleIcon={styleIcon}
+                styleCaption={styleCaption}
+
             />
         </div>
     );
@@ -62,6 +72,11 @@ Tree.global = {
     expandOnDoubleClickIcon: false,
     collapsing: false,
     animate: 100,
+
+    classNameItem: undefined, // string or function
+    styleItem: undefined, // object or function
+    styleIcon: undefined, // object or function
+    styleCaption: undefined, // object or function
 
 };
 Tree.each = (tree, callbackOrId, param = Tree.global) => TreeUtils.each(tree, callbackOrId, param.idName, param.childsName);
