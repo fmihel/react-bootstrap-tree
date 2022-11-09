@@ -65,19 +65,13 @@ App.defaultProps = {
 
 Возвращает новую карту дерва, для каждого узла вызывает callback (если указан), который должен вернуть узел\
 
-Ex, Свернуть все/collapse all
-```js
-    let newTree = Tree.map(tree,(child,parent)=>{
-        return {...child,expand:false};
-    });
-```
 ---
 ### Tree.each(tree:array, callbackOrId:function | string , param?:{idName,childsName} ):object | undefined
 
 Цикл по всем узлам дерева tree, до момента пока callbackOrId не вернет true (или пока не найден узел с id = callbackOrId). 
 Вернет либо найденный элемент или undefined
 
-Ex, Поиск
+Ex. Поиск
 ```js
     let item = Tree.each(tree,(item,parent)=>{
         return item.id === '100';
