@@ -72,11 +72,38 @@ class App extends React.Component {
         this.onSelectForMove = this.onSelectForMove.bind(this);
         this.onExpandTo = this.onExpandTo.bind(this);
         this.scroll = this.scroll.bind(this);
+        this.test = this.test.bind(this);
+
         this.tree = undefined;
         this.state = {
             setup: {
             },
-            data: treeGenerate({ count: 10, deep: 5 }),
+            //data: treeGenerate({ count: 10, deep: 5 }),
+            data: [
+                {
+                    id: '/',
+                    caption: 'root',
+                    childs: [
+                        {
+                            id: '/path1',
+                            caption: 'path1',
+                            childs: [
+                                { id: '/path1/path2', caption: 'path2' },
+                                { id: '/path1/path3', caption: 'path3' },
+                            ],
+                        },
+                        {
+                            id: '/path4',
+                            caption: 'path4',
+                            childs: [
+                                { id: '/path4/path5', caption: 'path5' },
+                                { id: '/path4/path6', caption: 'path6' },
+                            ],
+                        },
+
+                    ],
+                },
+            ],
         };
         this.current = false;
         this.selectForMove = false;
@@ -173,6 +200,13 @@ class App extends React.Component {
         }
     }
 
+    test() {
+        console.log('test');
+        const id = '/path1'.replace('/', '\\/');
+        const $f = $(`#${id}`);
+        console.log($f);
+    }
+
     componentDidMount() {
     }
 
@@ -189,6 +223,7 @@ class App extends React.Component {
                     <button type="button" onClick={this.onSelectForMove}>select for move</button>
                     <button type="button" onClick={this.onExpandTo}>expand to</button>
                     <button type="button" onClick={this.scroll}>scroll to</button>
+                    <button type="button" onClick={this.test}>test</button>
                 </div>
                 <div style={{ height: 500, overflow: 'auto', border: '1px solid gray' }}>
                     <Tree

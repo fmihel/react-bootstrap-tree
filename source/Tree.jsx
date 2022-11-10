@@ -4,7 +4,6 @@ import { ut } from 'fmihel-browser-lib';
 import React from 'react';
 import TreeNodes from './TreeNodes.jsx';
 import TreeUtils from './TreeUtils.js';
-import TreeSetupUtils from './TreeSetupUtils.js';
 
 function Tree({
     data = [],
@@ -34,6 +33,7 @@ function Tree({
     return (
         <div className={`tree ${className}`} id={id}>
             <TreeNodes
+                id={id}
                 data={data}
                 all={data}
                 idName={idName}
