@@ -3,13 +3,13 @@ const {defArg} = require('fmihel-server-lib');
 
 const toRemotePath = defArg('topath');
 const toProduction = !toRemotePath && defArg('prod');
-const remotePath = path.resolve('C:/work/admin/node_modules/fmihel-react-bootstrap-tree/','dist');
+const remotePath = path.resolve('C:/work/test/node_modules/fmihel-react-bootstrap-tree/','dist');
 
 
 module.exports = {
   mode: toProduction?'production':'development',
   devtool: toProduction?'':'inline-source-map',
-  entry: './source/Tree.jsx',
+  entry: './source/index.js',
   output: {
     path: toRemotePath?remotePath:path.resolve(__dirname, 'dist'),
     filename: 'react-bootstrap-tree'+((toProduction||toRemotePath)?'.min':'')+'.js',

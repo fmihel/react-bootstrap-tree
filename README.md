@@ -1,10 +1,16 @@
 # react-bootstrap-tree v2.0
-bootstrap tree react component
-# Tree view react component (bootstrap compatible)
 
 ## Install
 ```npm i fmihel-react-bootstrap-tree```
 
+---
+
+## Peer depend (optional)
+If use scroll function Tree.scroll(...) add jquery\
+```npm i jquery```
+
+
+---
 ## Simple use
 ```js
 import "fmihel-react-bootstrap-tree/style/tree.scss";
@@ -59,28 +65,81 @@ App.defaultProps = {
 };
 ``` 
 
-## utils
 ---
-### Tree.map(tree:array,callback:function,param?:{idName,childsName}):array
 
+## Утилиты для работы со структурой дерева
+
+```Tree.map(tree:array,callback:function,param?:{idName,childsName}):array```\
 Возвращает новую карту дерва, для каждого узла вызывает callback (если указан), который должен вернуть узел\
 
 ---
-### Tree.each(tree:array, callbackOrId:function | string , param?:{idName,childsName} ):object | undefined
+```Tree.each(tree:array, callbackOrId:function | string , param?:{idName,childsName} ):object | undefined```\
+Цикл по всем узлам дерева tree, до момента пока callbackOrId(item,parent) не вернет true (или пока не найден узел с id = callbackOrId). ``Для верхнего уровня parent = 'root'``. Вернет либо найденный элемент или undefined
 
-Цикл по всем узлам дерева tree, до момента пока callbackOrId не вернет true (или пока не найден узел с id = callbackOrId). 
-Вернет либо найденный элемент или undefined
+---
+```Tree.filter(tree:array, callback:functikon,param?:{childsName} ):object```\
+Возыращает новое дерево, для узлов которого callback(child,parent) возвращает true
 
-Ex. Поиск
+---
+```Tree.parent(tree, callbackOrId, param?:{idName, childsName}):array | undefined```\
+Возвращает родительский узел
+
+---
+```Tree.parents(tree, callbackOrId, param?:{idName, childsName}):array```\
+Возырвщает список всех родительских узлов
+
+---
+```Tree.childs(tree, callbackOrId, param?:{idName, childsName}):array | undefined```\
+Возвращает список childs, т.е. список соседних элементов для callbackOrId
+
+---
+```Tree.eq(id1, id2):boolean```\
+Алгоритм сравнения двух идентификаторов. Сравнение производится с привидением типов, но с учетом что false != 0/
+
+ ---
+```Tree.scroll(scroll:string, target:string, animate:integer, off:integer)```\
+Динамический скролинг контейнера с DOM.id = scroll до попадания DOM.id = target в область видимости внутри scroll.\
+`scroll` - id в дерева (задавать при использовании <Tree id="ID"....>)\
+`target` - id узла\
+`animate` - время анимации в мсек\
+`off` - смещение относительно верхней граница scroll\
+
+---
+
+```txt 
+param = {idName:string,childsName:string}  в случае если ключевые поля в основной структуре 
+tree имеют другое название, нужно указать их с помощью param ( можно сделать через глобальную настройку Tree.global) 
+```
+
+---
+
+
+
+## TreeSetupUtils
+Подключение:\
+``` import {TreeSetupUtils} from 'fmihel-react-bootstrap-tree'; ```
+
+---
+```TreeSetupUtils.each(setup, callback)```\
+Цикл по всем элементам setup, вернет id для которого callback({id,item,setup}) вернет true
+
+---
+```TreeSetupUtils.map(setup, callback = undefined)```\
+Возвращает новый setup
+
+```TreeSetupUtils.expandTo(tree, setup, toId, idName?:string = 'id', childsName?:string = 'childs')```\
+Возвращает новый setup, где раскрыты все родительские элементы для toId
+
+---
+
+## Использование утилит для навигации, поиска . позиционирования и т.д.( Issue )
+
+### Поиск
 ```js
     let item = Tree.each(tree,(item,parent)=>{
         return item.id === '100';
     });
 ```
-
-
-
-
 
 
 

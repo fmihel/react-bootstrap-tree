@@ -4,7 +4,7 @@ import { ut } from 'fmihel-browser-lib';
 import React from 'react';
 import TreeNodes from './TreeNodes.jsx';
 import TreeUtils from './TreeUtils.js';
-import SetupUtils from './SetupUtils.js';
+import TreeSetupUtils from './TreeSetupUtils.js';
 
 function Tree({
     data = [],
@@ -80,8 +80,8 @@ Tree.global = {
     styleItem: undefined, // object or function
     styleIcon: undefined, // object or function
     styleCaption: undefined, // object or function
-
 };
+
 Tree.each = (tree, callbackOrId, param = Tree.global) => TreeUtils.each(tree, callbackOrId, param.idName, param.childsName);
 Tree.parent = (tree, callbackOrId, param = Tree.global) => TreeUtils.parent(tree, callbackOrId, param.idName, param.childsName);
 Tree.parents = (tree, callbackOrId, param = Tree.global) => TreeUtils.parents(tree, callbackOrId, param.idName, param.childsName);
@@ -137,9 +137,5 @@ Tree.scroll = (treeId, toId, animate = 0, off = 0) => {
         off,
     });
 };
-
-Tree.setupExpandTo = (tree, setup, toId, param = Tree.global) => SetupUtils.expandTo(tree, setup, toId, param.idName, param.childsName);
-Tree.setupMap = (setup, callback = undefined) => SetupUtils.map(setup, callback);
-Tree.setupEach = (setup, callback) => SetupUtils.each(setup, callback);
 
 export default Tree;

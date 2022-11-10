@@ -1,6 +1,6 @@
 import TreeUtils from './TreeUtils';
 
-export default class SetupUtils {
+export default class TreeSetupUtils {
     static each(setup, callback) {
         const ids = Object.keys(setup);
         for (let i = 0; i < ids.length; i++) {
@@ -26,7 +26,7 @@ export default class SetupUtils {
         return out;
     }
 
-    static expandTo(tree, setup, toId, idName, childsName) {
+    static expandTo(tree, setup, toId, idName = 'id', childsName = 'childs') {
         const parents = TreeUtils.parents(tree, toId, idName, childsName);
         const newSetup = Object.keys(setup).map((key) => ({ ...setup[`${key}`], select: false }));
 
