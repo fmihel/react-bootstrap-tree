@@ -205,7 +205,9 @@ export default class TreeNodes extends React.Component {
         const getIcon = (item) => {
             const expnd = expand(item);
             if (onGetIcon) {
-                return onGetIcon({ item, expand: expnd });
+                return onGetIcon({
+                    item, expand: expnd, setup, all,
+                });
             }
             const isFolder = (childsName in item);
             if (isFolder) {
