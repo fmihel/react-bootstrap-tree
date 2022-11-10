@@ -69,35 +69,35 @@ App.defaultProps = {
 
 ## Утилиты для работы со структурой дерева
 
-```Tree.map(tree:array,callback:function,param?:{idName,childsName}):array```\
+### Tree.map(tree:array,callback:function,param?:{idName,childsName}):array
 Возвращает новую карту дерва, для каждого узла вызывает callback (если указан), который должен вернуть узел\
 
 ---
-```Tree.each(tree:array, callbackOrId:function | string , param?:{idName,childsName} ):object | undefined```\
+### Tree.each(tree:array, callbackOrId:function | string , param?:{idName,childsName} ):object | undefined
 Цикл по всем узлам дерева tree, до момента пока callbackOrId(item,parent) не вернет true (или пока не найден узел с id = callbackOrId). ``Для верхнего уровня parent = 'root'``. Вернет либо найденный элемент или undefined
 
 ---
-```Tree.filter(tree:array, callback:functikon,param?:{childsName} ):object```\
+### Tree.filter(tree:array, callback:functikon,param?:{childsName} ):object
 Возыращает новое дерево, для узлов которого callback(child,parent) возвращает true
 
 ---
-```Tree.parent(tree, callbackOrId, param?:{idName, childsName}):array | undefined```\
+### Tree.parent(tree, callbackOrId, param?:{idName, childsName}):array | undefined
 Возвращает родительский узел
 
 ---
-```Tree.parents(tree, callbackOrId, param?:{idName, childsName}):array```\
+### Tree.parents(tree, callbackOrId, param?:{idName, childsName}):array
 Возырвщает список всех родительских узлов
 
 ---
-```Tree.childs(tree, callbackOrId, param?:{idName, childsName}):array | undefined```\
+### Tree.childs(tree, callbackOrId, param?:{idName, childsName}):array | undefined
 Возвращает список childs, т.е. список соседних элементов для callbackOrId
 
 ---
-```Tree.eq(id1, id2):boolean```\
+### Tree.eq(id1, id2):boolean
 Алгоритм сравнения двух идентификаторов. Сравнение производится с привидением типов, но с учетом что false != 0/
 
  ---
-```Tree.scroll(scroll:string, target:string, animate:integer, off:integer)```\
+### Tree.scroll(scroll:string, target:string, animate:integer, off:integer)
 Динамический скролинг контейнера с DOM.id = scroll до попадания DOM.id = target в область видимости внутри scroll.\
 `scroll` - id в дерева (задавать при использовании <Tree id="ID"....>)\
 `target` - id узла\
@@ -120,27 +120,42 @@ tree имеют другое название, нужно указать их с
 ``` import {TreeSetupUtils} from 'fmihel-react-bootstrap-tree'; ```
 
 ---
-```TreeSetupUtils.each(setup, callback)```\
+### TreeSetupUtils.each(setup, callback)
 Цикл по всем элементам setup, вернет id для которого callback({id,item,setup}) вернет true
 
 ---
-```TreeSetupUtils.map(setup, callback = undefined)```\
+### TreeSetupUtils.map(setup, callback = undefined)
 Возвращает новый setup
 
-```TreeSetupUtils.expandTo(tree, setup, toId, idName?:string = 'id', childsName?:string = 'childs')```\
+--- 
+### TreeSetupUtils.expandTo(tree, setup, toId, idName?:string = 'id', childsName?:string = 'childs')
 Возвращает новый setup, где раскрыты все родительские элементы для toId
 
 ---
 
 ## Использование утилит для навигации, поиска . позиционирования и т.д.( Issue )
 
-### Поиск
+### Поиск узла
 ```js
     let item = Tree.each(tree,(item,parent)=>{
         return item.id === '100';
     });
 ```
 
+### Удалить узел ID
+```js
+    let newTree = Tree.filter(tree, (item) => !Tree.eq(item.id, ID));
+```
+
+### Добавить узел с id = ID в узел с id=TOID
+```js
+    const to = Tree.each(tree, TOID);
+    if (to ){
+        if (!('childs' in to))
+            to.childs = [];    
+        to.childs.push({id:ID,caption:'new'});
+    }
+```
 
 
 
