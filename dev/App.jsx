@@ -17,6 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ut } from 'fmihel-browser-lib';
 import Tree from '../source/Tree.jsx';
+import TreeSetupUtils from '../source/TreeSetupUtils';
 
 Tree.global = {
     ...Tree.global,
@@ -194,7 +195,7 @@ class App extends React.Component {
 
     scroll() {
         const { setup } = this.state;
-        const select = Tree.setupEach(setup, ({ item }) => item.select);
+        const select = TreeSetupUtils.each(setup, ({ item }) => item.select);
         if (select) {
             Tree.scroll('mytree', select, 200, 100);
         }
