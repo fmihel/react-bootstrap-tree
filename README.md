@@ -87,7 +87,7 @@ App.defaultProps = {
 |captionName|string|caption|*|имя поля отвечающее за текст|
 |childsName|string|childs|*|имя поля отвечающее за поля с дочерними узлами|
 |IconComponent|object|null|*|компонент отображающий иконку|
-|icons|object|```{expand:undefined,collapse:undefined,file:undefined}```|*|объект с описанием иконок для сворачиваемых разворачиваемых и конечных узлов|
+|icons|object|icons*|*|объект с описанием иконок для сворачиваемых разворачиваемых и конечных узлов|
 |expandOnDoubleClickCaption|boolean|true|*|разворачивать при двойном клике на иконку|
 |expandOnDoubleClickIcon|boolean|false|*|разворачивать при двойном клике на тексте|
 |collapsing|boolean|false|*|при разворачивании, сворачивать другие неучавствующие в ветке узлы|
@@ -104,7 +104,7 @@ App.defaultProps = {
 |onGetIcon|function|undefined|||
 
 ###### ``` global* - можно установить через глобальное статическое свойство Tree.global```
-
+###### ``` icons* = {expand:undefined,collapse:undefined,file:undefined}```
 ---
 ## Утилиты для работы со структурой дерева
 
