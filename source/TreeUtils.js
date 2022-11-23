@@ -102,16 +102,19 @@ export default class TreeUtils {
         animate = 0,
         off = 0,
     }) {
-        const $scroll = $(scroll);
+        import('jquery').then(({ default: $ }) => {
+            // const $ = mod.default;
+            const $scroll = $(scroll);
 
-        const posTar = JX.abs(target);
-        const posScr = JX.abs(scroll);
-        const delta = posTar.y - posScr.y + $scroll.scrollTop() - off;
+            const posTar = JX.abs(target);
+            const posScr = JX.abs(scroll);
+            const delta = posTar.y - posScr.y + $scroll.scrollTop() - off;
 
-        if (animate > 0) {
-            $scroll.animate({ scrollTop: delta }, animate);
-        } else {
-            $scroll.scrollTop(delta);
-        }
+            if (animate > 0) {
+                $scroll.animate({ scrollTop: delta }, animate);
+            } else {
+                $scroll.scrollTop(delta);
+            }
+        });
     }
 }

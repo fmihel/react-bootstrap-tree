@@ -138,16 +138,20 @@ export default class TreeNodes extends React.Component {
                 const qid = `#${id}`.replaceAll('/', '\\/');
 
                 if (action === 'expand') {
-                    $(`#${treeId}`).find(qid).find('.tree-childs')
-                        .slideUp(0)
-                        .slideDown(animate, () => {
-                            ok({ id, action });
-                        });
+                    import('jquery').then(({ default: $ }) => {
+                        $(`#${treeId}`).find(qid).find('.tree-childs')
+                            .slideUp(0)
+                            .slideDown(animate, () => {
+                                ok({ id, action });
+                            });
+                    });
                 } else { // action==='collapse'
-                    $(`#${treeId}`).find(qid).find('.tree-childs')
-                        .slideUp(animate, () => {
-                            ok({ id, action });
-                        });
+                    import('jquery').then(({ default: $ }) => {
+                        $(`#${treeId}`).find(qid).find('.tree-childs')
+                            .slideUp(animate, () => {
+                                ok({ id, action });
+                            });
+                    });
                 }
             } else {
                 ok({ id, action });

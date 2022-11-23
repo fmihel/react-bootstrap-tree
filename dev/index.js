@@ -11,6 +11,4 @@ import { Provider } from 'react-redux';
 import redux from 'REDUX';
 import App from './App.jsx';
 
-$(() => {
-    ReacDOM.render(<Provider store={redux.store}><App /></Provider>, DOM('#app'));
-});
+ReacDOM.render(<Provider store={redux.store}><App /></Provider>, DOM('#app'));

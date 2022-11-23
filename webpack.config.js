@@ -3,8 +3,8 @@ const {defArg} = require('fmihel-server-lib');
 
 const toRemotePath = defArg('topath');
 const toProduction = !toRemotePath && defArg('prod');
-const remotePath = path.resolve('C:/work/test/node_modules/fmihel-react-bootstrap-tree/','dist');
-
+//const remotePath = path.resolve('C:/work/test/node_modules/fmihel-react-bootstrap-tree/','dist');
+const remotePath = path.resolve('D:\\work\\fmihel\\app-react\\node_modules\\fmihel-react-bootstrap-tree\\','dist');
 
 module.exports = {
   mode: toProduction?'production':'development',
@@ -31,7 +31,6 @@ module.exports = {
     },
     "fmihel-browser-lib":"fmihel-browser-lib",
     jquery:'jquery',
-    bootstrap:'bootstrap'
   },
   module: {
     rules: [

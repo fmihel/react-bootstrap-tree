@@ -71,8 +71,8 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
+            //$: 'jquery',
+            //jQuery: 'jquery',
         }),
         new HtmlWebPackPlugin({
             template: path.join(SOURCE_PATH,'index.html'),
