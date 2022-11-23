@@ -5,13 +5,6 @@
 $ npm i fmihel-react-bootstrap-tree
 ```
 
----
-
-## Peer depend
-```bash 
-$ npm i jquery
-```
-
 
 ---
 ## Simple use
@@ -109,7 +102,7 @@ App.defaultProps = {
 ## Утилиты для работы со структурой дерева
 
 ### Tree.map(tree:array,callback:function,param?:{idName,childsName}):array
-Возвращает новую карту дерва, для каждого узла вызывает ```callback(child,parent)``` (если указан), который должен вернуть узел\
+Возвращает новую карту дерва, для каждого узла вызывает ```callback(child,parent)``` (если указан), который должен вернуть узел
 
 ---
 ### Tree.each(tree:array, callbackOrId:function | string , param?:{idName,childsName} ):object | undefined
@@ -177,7 +170,7 @@ import {TreeSetupUtils} from 'fmihel-react-bootstrap-tree';
 
 ---
 
-## Использование утилит для навигации, поиска . позиционирования и т.д.( Issue )
+## Использование утилит для навигации, поиска, позиционирования и т.д.( Issue )
 
 ### Поиск узла
 ```js
