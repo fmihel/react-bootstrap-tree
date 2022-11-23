@@ -1,5 +1,22 @@
-@mixin tree-mixin($size,$row-border,$hover-bg,$select-bg,$select-color){
+@use "sass:meta";
+@mixin tree-mixin($args...){
+    $size:32px;
+    $border:silver;
+    $hover-bg:silver;
+    $hover-color:'none';
+    $select-bg:#0E639C;    
+    $select-color:white;
+
+    @each $name, $mean in meta.keywords($args) {
+        @if ($name=='size'){$size:$mean;};    
+        @if ($name=='border'){$border:$mean;};    
+        @if ($name=='hover-bg'){$hover-bg:$mean;};
+        @if ($name=='hover-color'){$hover-color:$mean;};
+        @if ($name=='select-bg'){$select-bg:$mean;};
+        @if ($name=='select-color'){$select-color:$mean;};
+    }
     
+
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -17,7 +34,11 @@
 
 
         cursor: pointer;
-        border-bottom: 1px solid $row-border;
+        @if $border!='none'{
+            border-bottom: 1px solid $border;
+        } @else {
+            border-bottom: 1px solid rgba(0,0,0,0);
+        }
 
         min-height: $size;
         line-height: $size;
@@ -30,7 +51,12 @@
         align-items: stretch;
 
         &:hover{
-            background-color: $hover-bg;
+            @if $hover-bg!='none' {
+                background-color: $hover-bg;
+            }
+            @if $hover-color!='none' {
+                color:$hover-color;
+            }
         }
 
         .tree-level{
@@ -53,10 +79,21 @@
     }
     
     .tree-item-select{
-        background-color: $select-bg ;
-        color:$select-color ;
-        &:hover{
+        @if $select-bg!='none' {
             background-color: $select-bg ;
+        }
+
+        @if $select-color!='none' {
+            color:$select-color ;
+        }
+
+        &:hover{
+            @if $select-bg!='none' {
+                background-color: $select-bg ;
+            }
+            @if $select-color!='none' {
+                color:$select-color ;
+            }
         }
     }
 }

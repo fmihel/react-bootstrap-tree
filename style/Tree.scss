@@ -1,5 +1,13 @@
 
 @import './tree-mixin.scss'; 
 .tree{
-    @include tree-mixin(32px,#9b9b9b88,rgba(131, 131, 131, 0.253),#0E639C,rgb(255, 255, 255));
+    @include tree-mixin(
+        $size: 32px,
+        $border:#37373D,
+        $hover-bg: #37373D,
+        //$hover-color:rgb(255, 255, 255),
+        $select-bg:#0E639C,
+        $select-color:white
+      
+    );
 }
