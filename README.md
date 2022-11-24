@@ -87,9 +87,9 @@ App.defaultProps = {
 |animate|int|0|*|скорость анимации в мс, требует установки ```jQuery```|
 |className|string||*|дополнительный верхний класс|
 |classNameItem|string||*|дополнительный класс для узла|
-|styleItem|string \| function||*|дополнительный стиль (или ф-ция возвращающая тиль) для узла|
-|styleIcon|string \| function||*|дополнительный стиль (или ф-ция возвращающая тиль) для иконки|
-|styleCaption|string \| function||*|дополнительный стиль (или ф-ция возвращающая тиль) для текста|
+|styleItem|string \| function||*|дополнительный стиль (или ф-ция возвращающая стиль) для узла|
+|styleIcon|string \| function||*|дополнительный стиль (или ф-ция возвращающая стиль) для иконки|
+|styleCaption|string \| function||*|дополнительный стиль (или ф-ция возвращающая стиль) для текста|
 |onClick|function|undefined|||
 |onDoubleClick|function|undefined|||
 |onSelect|```function({ [idName]:string, item:object })```|undefined||Событие при выборе узла|
