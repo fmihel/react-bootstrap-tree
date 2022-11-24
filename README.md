@@ -1,4 +1,4 @@
-# react-bootstrap-tree v2.0
+# react-bootstrap-tree v2
 
 ## Install
 ```bash 
@@ -101,37 +101,53 @@ App.defaultProps = {
 ---
 ## Утилиты для работы со структурой дерева
 
-### Tree.map(tree:array,callback:function,param?:{idName,childsName}):array
+```js
+Tree.map(tree:array,callback:function,param?:{idName,childsName}):array
+```
 Возвращает новую карту дерва, для каждого узла вызывает ```callback(child,parent)``` (если указан), который должен вернуть узел
 
 ---
-### Tree.each(tree:array, callbackOrId:function | string , param?:{idName,childsName} ):object | undefined
+```js 
+Tree.each(tree:array, callbackOrId:function | string , param?:{idName,childsName} ):object | undefined
+```
 Цикл по всем узлам дерева tree, до момента пока ```callbackOrId(item,parent)``` не вернет true (или пока не найден узел с id = callbackOrId). ``Для верхнего уровня parent = 'root'``. Вернет либо найденный элемент или undefined
 
 ---
-### Tree.filter(tree:array, callback:functikon,param?:{childsName} ):object
+```js 
+Tree.filter(tree:array, callback:functikon,param?:{childsName} ):object
+```
 Возыращает новое дерево, для узлов которого ```callback(child,parent)``` возвращает true
 
 ---
-### Tree.parent(tree, callbackOrId, param?:{idName, childsName}):array | undefined
+```js 
+Tree.parent(tree, callbackOrId, param?:{idName, childsName}):array | undefined
+```
 Возвращает родительский узел для узла с id = callbackOrId или для, которого ```callback(item,parent)``` вернет
 `true`
 
 ---
-### Tree.parents(tree, callbackOrId, param?:{idName, childsName}):array
+```js 
+Tree.parents(tree, callbackOrId, param?:{idName, childsName}):array
+```
 Возырвщает список всех родительских узлов для узла с id = callbackOrId или для, которого ```callback(item,parent)``` вернет
 `true`
 
 ---
-### Tree.childs(tree, callbackOrId, param?:{idName, childsName}):array | undefined
+```js 
+Tree.childs(tree, callbackOrId, param?:{idName, childsName}):array | undefined
+```
 Возвращает список childs, т.е. список соседних элементов для узла с id = callbackOrId или для которого ```callback(item,parent)``` вернет`true`
 
 ---
-### Tree.eq(id1, id2):boolean
+```js 
+Tree.eq(id1, id2):boolean
+```
 Алгоритм сравнения двух идентификаторов. Сравнение производится с привидением типов, но с учетом что false != 0/
 
  ---
-### Tree.scroll(scroll:string, target:string, animate:integer, off:integer)
+```js 
+Tree.scroll(scroll:string, target:string, animate:integer, off:integer)
+```
 Динамический скролинг контейнера с DOM.id = scroll до попадания DOM.id = target в область видимости внутри scroll.\
 `scroll` - id в дерева (задавать при использовании ```<Tree id="ID"....>```)\
 `target` - id узла\
@@ -156,15 +172,21 @@ import {TreeSetupUtils} from 'fmihel-react-bootstrap-tree';
 ```
 
 ---
-### TreeSetupUtils.each(setup, callback)
+```js 
+TreeSetupUtils.each(setup, callback)
+```
 Цикл по всем элементам ```setup```, вернет id для которого ```callback({id,item,setup})``` вернет true
 
 ---
-### TreeSetupUtils.map(setup, callback = undefined)
+```js 
+TreeSetupUtils.map(setup, callback = undefined)
+```
 Возвращает новый ```setup```, выполняя для каждого элемента ```callback({id,item,setup})```, 
 
 --- 
-### TreeSetupUtils.expandTo(tree, setup, toId, idName?:string = 'id', childsName?:string = 'childs')
+```js 
+TreeSetupUtils.expandTo(tree, setup, toId, idName?:string = 'id', childsName?:string = 'childs')
+```
 Возвращает новый ```setup```, где раскрыты все родительские элементы для toId, при этом не сворачивает другие узлы, 
 но снимает с них выделенин ```(select = false)``` и помечает toId
 
