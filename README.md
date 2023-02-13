@@ -76,7 +76,6 @@ App.defaultProps = {
 |data|array|[]||древовидная структура |
 |setup|object|{}||текущая настройка дерева ( какие узлы раскрыты, какиен выделены)|
 |idName|string|id|*|имя поля отвечающее за идентификатор|
-|idName|string|id|*|имя поля отвечающее за идентификатор|
 |captionName|string|caption|*|имя поля отвечающее за текст|
 |childsName|string|childs|*|имя поля отвечающее за поля с дочерними узлами|
 |IconComponent|object|null|*|компонент отображающий иконку|
