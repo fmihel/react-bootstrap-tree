@@ -89,7 +89,7 @@ class App extends React.Component {
                             id: '/path1',
                             caption: 'path1',
                             childs: [
-                                { id: '/path1/path2', caption: 'path2' },
+                                { id: '/path1/path2', caption: 'path-attr', attr: { test: '' } },
                                 { id: '/path1/path3', caption: 'path3' },
                             ],
                         },

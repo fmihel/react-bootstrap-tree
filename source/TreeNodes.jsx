@@ -193,6 +193,7 @@ export default class TreeNodes extends React.Component {
             styleItem, // object or function
             styleIcon, // object or function
             styleCaption, // object or function
+            aliasAttr,
 
         } = this.props;
         const { animateExpand, animateCollapse } = this.state;
@@ -235,7 +236,7 @@ export default class TreeNodes extends React.Component {
         return (
             <>
                 {data.map((item) => (
-                    <div key={item[idName]} className="tree-node" id={item[idName]}>
+                    <div key={item[idName]} className="tree-node" id={item[idName]} {...(item[aliasAttr] ? item[aliasAttr] : {})}>
                         <TreeNode
                             caption={item[captionName]}
                             level={level}
@@ -291,5 +292,6 @@ TreeNodes.defaultProps = {
     styleItem: undefined, // object or function
     styleIcon: undefined, // object or function
     styleCaption: undefined, // object or function
+    aliasAttr: 'attr', // object or function
 
 };
